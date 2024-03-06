@@ -8,4 +8,9 @@
 
 <style lang="scss">
 	@import "$static/stylesheets/guideline";
+
+	main {
+		width: 100%;
+		height: 100%;
+	}
 </style>

@@ -4,7 +4,6 @@
 <main>
 	<section id="text-container">
 		<h1 id="statement">LEMON<br />FOXMERE</h1>
-		<h1 id="fake-statement">LEMON<br />FOXMERE</h1>
 		<h1 id="description">Software Engineer &<br />Digital Artist</h1>
 
 		<section id="social-container">
@@ -199,7 +198,43 @@
 				max-width: 600px;
 
 				font-size: 20px;
-				line-height: 26px;
+				line-height: 1.3em;
+			}
+		}
+
+		@media screen and (max-width: $small-desktop-width) {
+			#graphics-container {
+				margin-left: 25px;
+				width: clamp(600px, 45%, 700px);
+			}
+
+			#text-container {
+				#statement {
+					font-size: 64px;
+				}
+
+				#description {
+					font-size: 28px;
+				}
+
+				#social-container {
+					button {
+						width: 20px;
+						height: 20px;
+						margin-right: 18px;
+
+						&#github {
+							margin-right: 20px;
+						}
+					}
+				}
+
+				#bio {
+					margin-top: 55px;
+					max-width: 440px;
+
+					font-size: 16px;
+				}
 			}
 		}
 	}
