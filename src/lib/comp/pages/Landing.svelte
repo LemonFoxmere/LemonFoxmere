@@ -4,6 +4,8 @@
 <main>
 	<section id="text-container">
 		<h1 id="statement">LEMON<br />FOXMERE</h1>
+		<h1 id="fake-statement" class="exclude-desktop">LEMON<br />FOXMERE</h1>
+
 		<h1 id="description">Software Engineer &<br />Digital Artist</h1>
 
 		<section id="social-container">
@@ -38,7 +40,8 @@
 			</button>
 		</section>
 
-		<p id="bio">
+		<!-- the tablet and phone version will be the next page -->
+		<p id="bio" class="only-desktop">
 			Heya! I'm a software engineer, ML researcher, and digital artist from the bay area, and my
 			goal is to utilize these three passion into making awesome projects! When it comes to bulding
 			them, I have many tools I like to use: SvelteKit, NestJS, Pytorch, and Numpy to name of few;
@@ -57,6 +60,31 @@
 		<img id="fox-black" class="fox" src="/images/svg/fox-black.svg" alt="" />
 		<img id="fox-white" class="fox" src="/images/svg/fox-white.svg" alt="" />
 	</section>
+
+	<svg id="clip-svg" viewBox="0 0 1 1">
+		<defs>
+			<clipPath clipPathUnits="objectBoundingBox" id="clip-path-general">
+				<path class="st0" d="M0.4,0L0,0.5L0.5,1l0.1-0.4L1,0.2L0.4,0z" />
+			</clipPath>
+
+			<!-- every object needs its own clip because of translation and shit. Iunno -->
+			<clipPath
+				style="transform: translateX(45.7px)"
+				clipPathUnits="objectBoundingBox"
+				id="clip-path-fox"
+			>
+				<path class="st0" d="M0.4,0L0,0.5L0.5,1l0.1-0.4L1,0.2L0.4,0z" />
+			</clipPath>
+
+			<clipPath
+				style="transform: translateX(45.7px)"
+				clipPathUnits="objectBoundingBox"
+				id="clip-path-text"
+			>
+				<path class="st0" d="M0.4,0L0,0.5L0.5,1l0.1-0.4L1,0.2L0.4,0z" />
+			</clipPath>
+		</defs>
+	</svg>
 </main>
 
 <style lang="scss">
@@ -83,16 +111,20 @@
 
 			// border: 2px solid blue;
 
+			svg {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+
 			.image-graphics {
 				display: block;
 				object-fit: cover;
 
 				z-index: 2;
 
-				-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 946 854"><path d="M344.9,0.6c0,0-115,150.1-344.9,450.4c311.1,268.2,466.6,402.4,466.6,402.4S513,714,605.7,435.2 L946,159.1C545.3,53.5,344.9,0.6,344.9,0.6z"></path></svg>')
-					center/contain no-repeat;
-				mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 946 854"><path d="M344.9,0.6c0,0-115,150.1-344.9,450.4c311.1,268.2,466.6,402.4,466.6,402.4S513,714,605.7,435.2 L946,159.1C545.3,53.5,344.9,0.6,344.9,0.6z"></path></svg>')
-					center/contain no-repeat;
+				-webkit-clip-path: url(#clip-path-general);
+				clip-path: url(#clip-path-general);
 
 				width: 100%;
 				height: 100%;
@@ -109,10 +141,9 @@
 					z-index: 1;
 				}
 				&#fox-white {
-					-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 946 854" style="transform:translateX(40px)"><path d="M344.9,0.6c0,0-115,150.1-344.9,450.4c311.1,268.2,466.6,402.4,466.6,402.4S513,714,605.7,435.2 L946,159.1C545.3,53.5,344.9,0.6,344.9,0.6z"></path></svg>')
-						center/contain no-repeat;
-					mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 946 854" style="transform:translateX(40px)"><path d="M344.9,0.6c0,0-115,150.1-344.9,450.4c311.1,268.2,466.6,402.4,466.6,402.4S513,714,605.7,435.2 L946,159.1C545.3,53.5,344.9,0.6,344.9,0.6z"></path></svg>')
-						center/contain no-repeat;
+					-webkit-clip-path: url(#clip-path-fox);
+					clip-path: url(#clip-path-fox);
+
 					z-index: 3;
 				}
 			}
@@ -133,14 +164,8 @@
 				color: $black;
 				letter-spacing: -2.5px;
 			}
-
 			#fake-statement {
 				@extend #statement;
-				font-size: 90px;
-
-				opacity: 0.5;
-				position: absolute;
-				top: 0px;
 			}
 
 			#description {
@@ -189,6 +214,8 @@
 						width: 100%;
 						height: 100%;
 						overflow: visible;
+
+						color: $black;
 					}
 				}
 			}
@@ -204,7 +231,7 @@
 
 		@media screen and (max-width: $small-desktop-width) {
 			#graphics-container {
-				margin-left: 25px;
+				margin-left: 10px;
 				width: clamp(600px, 45%, 700px);
 			}
 
@@ -234,6 +261,74 @@
 					max-width: 440px;
 
 					font-size: 16px;
+				}
+			}
+		}
+
+		@media screen and (max-width: $tablet-width) {
+			// border: 5px solid red;
+
+			#graphics-container {
+				position: absolute;
+				right: -36vh;
+				top: 36px;
+				margin-left: 60px;
+
+				width: auto;
+				height: 80vh;
+			}
+
+			#clip-svg {
+				position: absolute;
+				width: auto;
+				height: 80vh;
+			}
+
+			#text-container {
+				position: absolute;
+				bottom: 115px; // 35 + 10 + 50 + 20
+
+				#statement {
+					// font-size: 48px;
+					font-size: min(11vw, 100px);
+				}
+
+				#fake-statement {
+					position: absolute;
+
+					font-size: min(11vw, 100px);
+
+					opacity: 0.5;
+					position: absolute;
+					color: red;
+
+					-webkit-clip-path: url(#clip-path-text);
+					clip-path: url(#clip-path-text);
+
+					top: 0px;
+				}
+
+				#description {
+					font-size: 32px;
+				}
+
+				#social-container {
+					button {
+						width: 22px;
+						height: 22px;
+						margin-right: 18px;
+
+						&#github {
+							margin-right: 24px;
+						}
+					}
+				}
+
+				#bio {
+					margin-top: 55px;
+					max-width: 440px;
+
+					font-size: 18px;
 				}
 			}
 		}

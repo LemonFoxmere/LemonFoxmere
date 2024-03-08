@@ -126,6 +126,10 @@
 		<hr />
 	</section>
 
+	<section id="content">
+		<slot />
+	</section>
+
 	<!-- bottom bar nagication (phone and tablet only) -->
 	<section id="selector-window" class="exclude-desktop">
 		<div id="selector-background" />
@@ -143,10 +147,6 @@
 			<button><p>Project</p></button>
 			<button><p>Art</p></button>
 		</section>
-	</section>
-
-	<section id="content">
-		<slot />
 	</section>
 </main>
 
@@ -169,8 +169,8 @@
 		#selector-window {
 			position: -webkit-sticky;
 			position: sticky;
-			bottom: 0;
-			align-self: flex-end;
+			bottom: 10px;
+			align-self: center;
 
 			// left: 50%;
 			// transform: translateX(-50%);
@@ -317,12 +317,12 @@
 
 		@media screen and (max-width: $small-desktop-width) {
 			#content {
-				padding-left: 64px;
+				padding-left: 48px;
 			}
 
 			#side-bar {
-				width: 64px;
-				min-width: 64px;
+				width: 48px;
+				min-width: 48px;
 
 				position: sticky;
 				top: 0px;
@@ -353,6 +353,26 @@
 
 					margin: 35px 14px 0px 0px;
 				}
+			}
+		}
+
+		@media screen and (max-width: $tablet-width) {
+			#content {
+				padding: 0px 25px;
+			}
+
+			#selector-window {
+				bottom: 35px;
+			}
+		}
+
+		@media screen and (max-width: $mobile-width) {
+			#content {
+				padding: 0px 25px;
+			}
+
+			#selector-window {
+				bottom: 10px;
 			}
 		}
 	}
