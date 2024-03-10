@@ -10,6 +10,8 @@
 			scaling: number;
 			scaleInverse: number;
 			offset: number;
+			insetLeft: string;
+			insetRight: string;
 			animated: boolean;
 		};
 	}>({
@@ -20,6 +22,8 @@
 			scaling: 1.2,
 			scaleInverse: 0.83333,
 			offset: 0,
+			insetLeft: "4px",
+			insetRight: "4px",
 			animated: false
 		}
 	});
@@ -30,43 +34,96 @@
 	let projectsButton: HTMLButtonElement;
 	let artButton: HTMLButtonElement;
 
-	const scrollToSection = (name: string, scrollHeight: number, button: HTMLButtonElement) => {
+	let mobileNavigatorContainer: HTMLElement;
+	let aboutButtonMobile: HTMLButtonElement;
+	let projectsButtonMobile: HTMLButtonElement;
+	let artButtonMobile: HTMLButtonElement;
+
+	const scrollToSection = (
+		name: string,
+		scrollHeight: number,
+		button: HTMLButtonElement,
+		updateVertical: boolean
+	) => {
+		const totalContainerWidth = mobileNavigatorContainer.getBoundingClientRect().width;
+		const totalContentWidth =
+			aboutButtonMobile.getBoundingClientRect().width +
+			projectsButtonMobile.getBoundingClientRect().width +
+			artButtonMobile.getBoundingClientRect().width;
+
+		const buttonWidth = button.getBoundingClientRect().width;
 		const buttonHeight = button.getBoundingClientRect().height;
+		const buttonX = button.getBoundingClientRect().x;
 		const buttonY = button.getBoundingClientRect().y;
 
-		console.log(buttonY + buttonHeight);
+		console.log(totalContainerWidth - totalContentWidth);
 
 		$navState = {
 			name: name,
 			scrollHeight: scrollHeight,
 			ctaButton: button,
 			selectorProperties: {
-				scaling: buttonHeight / 100,
-				scaleInverse: 100 / buttonHeight,
-				offset: buttonY - aboutButton.getBoundingClientRect().y,
+				scaling: updateVertical ? buttonHeight / 100 : $navState.selectorProperties.scaling,
+				scaleInverse: updateVertical
+					? 100 / buttonHeight
+					: $navState.selectorProperties.scaleInverse,
+				offset: updateVertical
+					? buttonY - aboutButton.getBoundingClientRect().y
+					: $navState.selectorProperties.offset,
+				insetLeft: updateVertical
+					? $navState.selectorProperties.insetLeft
+					: `${buttonX - aboutButtonMobile.getBoundingClientRect().x + 4}px`,
+				insetRight: updateVertical
+					? $navState.selectorProperties.insetRight
+					: `${totalContainerWidth - (buttonX - aboutButtonMobile.getBoundingClientRect().x) - buttonWidth - (totalContainerWidth - totalContentWidth) / 2}px`,
 				animated: true
 			}
 		};
 	};
 
-	const updateSelector = (animated = true) => {
+	const updateSelector = (updateVertical: boolean, animated = true) => {
 		if (!$navState.ctaButton) return;
 
+		const totalContainerWidth = mobileNavigatorContainer.getBoundingClientRect().width;
+		const totalContentWidth =
+			aboutButtonMobile.getBoundingClientRect().width +
+			projectsButtonMobile.getBoundingClientRect().width +
+			artButtonMobile.getBoundingClientRect().width;
+
+		const buttonWidth = $navState.ctaButton.getBoundingClientRect().width;
 		const buttonHeight = $navState.ctaButton.getBoundingClientRect().height;
+		const buttonX = $navState.ctaButton.getBoundingClientRect().x;
 		const buttonY = $navState.ctaButton.getBoundingClientRect().y;
 
 		$navState.selectorProperties = {
-			scaling: buttonHeight / 100,
-			scaleInverse: 100 / buttonHeight,
-			offset: buttonY - aboutButton.getBoundingClientRect().y,
+			scaling: updateVertical ? buttonHeight / 100 : $navState.selectorProperties.scaling,
+			scaleInverse: updateVertical ? 100 / buttonHeight : $navState.selectorProperties.scaleInverse,
+			offset: updateVertical
+				? buttonY - aboutButton.getBoundingClientRect().y
+				: $navState.selectorProperties.offset,
+			insetLeft: updateVertical
+				? $navState.selectorProperties.insetLeft
+				: `${buttonX - aboutButtonMobile.getBoundingClientRect().x + 4}px`,
+			insetRight: updateVertical
+				? $navState.selectorProperties.insetRight
+				: `${totalContainerWidth - (buttonX - aboutButtonMobile.getBoundingClientRect().x) - buttonWidth - (totalContainerWidth - totalContentWidth) / 2}px`,
 			animated: animated
 		};
 	};
 
 	onMount(() => {
 		// initialize the nav state with animation set to false
+		const totalContainerWidth = mobileNavigatorContainer.getBoundingClientRect().width;
+		const totalContentWidth =
+			aboutButtonMobile.getBoundingClientRect().width +
+			projectsButtonMobile.getBoundingClientRect().width +
+			artButtonMobile.getBoundingClientRect().width;
+
+		const buttonWidth = aboutButtonMobile.getBoundingClientRect().width;
 		const buttonHeight = aboutButton.getBoundingClientRect().height;
+		const buttonX = aboutButtonMobile.getBoundingClientRect().x;
 		const buttonY = aboutButton.getBoundingClientRect().y;
+
 		$navState = {
 			name: "About",
 			scrollHeight: 0,
@@ -75,7 +132,9 @@
 				scaling: buttonHeight / 100,
 				scaleInverse: 100 / buttonHeight,
 				offset: buttonY - 35,
-				animated: false
+				animated: false,
+				insetLeft: `${buttonX - aboutButtonMobile.getBoundingClientRect().x + 4}px`,
+				insetRight: `${totalContainerWidth - (buttonX - aboutButtonMobile.getBoundingClientRect().x) - buttonWidth - (totalContainerWidth - totalContentWidth) / 2}px`
 			}
 		};
 
@@ -110,14 +169,16 @@
 		</div>
 
 		<section id="cta">
-			<button bind:this={aboutButton} on:click={() => scrollToSection("About", 0, aboutButton)}
-				><p>About</p></button
+			<button
+				bind:this={aboutButton}
+				on:click={() => scrollToSection("About", 0, aboutButton, true)}><p>About</p></button
 			>
 			<button
 				bind:this={projectsButton}
-				on:click={() => scrollToSection("Projects", 0, projectsButton)}><p>Projects</p></button
+				on:click={() => scrollToSection("Projects", 0, projectsButton, true)}
+				><p>Projects</p></button
 			>
-			<button bind:this={artButton} on:click={() => scrollToSection("Art", 0, artButton)}
+			<button bind:this={artButton} on:click={() => scrollToSection("Art", 0, artButton, true)}
 				><p>Art</p></button
 			>
 		</section>
@@ -130,19 +191,31 @@
 		<slot />
 	</section>
 
-	<!-- bottom bar nagication (phone and tablet only) -->
+	<!-- bottom bar navigation (phone and tablet only) -->
 	<section id="selector-window" class="exclude-desktop">
-		<div id="selector-background" />
+		<section bind:this={mobileNavigatorContainer} id="cta">
+			<button
+				bind:this={aboutButtonMobile}
+				on:click={() => scrollToSection("About", 0, aboutButtonMobile, false)}><p>About</p></button
+			>
 
-		<section id="cta">
-			<button><p>About</p></button>
+			<button
+				bind:this={projectsButtonMobile}
+				on:click={() => scrollToSection("Projects", 0, projectsButtonMobile, false)}
+				><p>Project</p></button
+			>
 
-			<button><p>Project</p></button>
-
-			<button><p>Art</p></button>
+			<button
+				bind:this={artButtonMobile}
+				on:click={() => scrollToSection("Art", 0, artButtonMobile, false)}><p>Art</p></button
+			>
 		</section>
 
-		<section id="fake-cta">
+		<section
+			id="fake-cta"
+			style="clip-path: inset(4px {$navState.selectorProperties.insetRight} 4px {$navState
+				.selectorProperties.insetLeft} round 46px);"
+		>
 			<button><p>About</p></button>
 			<button><p>Project</p></button>
 			<button><p>Art</p></button>
@@ -172,13 +245,10 @@
 			bottom: 10px;
 			align-self: center;
 
-			// left: 50%;
-			// transform: translateX(-50%);
-
 			margin-bottom: 10px;
 
 			width: 245px;
-			height: 50px;
+			height: 46px;
 
 			background-color: $translucent-cream;
 			-webkit-backdrop-filter: blur(30px) saturate(200%);
@@ -189,17 +259,26 @@
 			justify-content: center;
 			align-items: center;
 
-			#selector-background {
-				background-color: $black;
-			}
+			overflow: hidden;
 
 			#cta {
+				display: flex;
+				justify-content: space-evenly;
+
+				width: 100%;
+				padding: 0px 4px;
+				box-sizing: border-box;
+
+				color: $black;
+
 				button {
 					background: none;
 					border: none;
+					color: inherit;
 
 					p {
-						font-size: 18px;
+						font-size: 16px;
+						color: inherit;
 					}
 				}
 			}
@@ -207,6 +286,17 @@
 			#fake-cta {
 				@extend #cta;
 				position: absolute;
+
+				color: $white;
+				background-color: $black;
+
+				height: 100%;
+
+				z-index: 10;
+
+				transition: clip-path 700ms cubic-bezier(0.28, 1, 0.22, 1);
+
+				pointer-events: none;
 			}
 		}
 

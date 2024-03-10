@@ -4,7 +4,6 @@
 <main>
 	<section id="text-container">
 		<h1 id="statement">LEMON<br />FOXMERE</h1>
-		<h1 id="fake-statement" class="exclude-desktop">LEMON<br />FOXMERE</h1>
 
 		<h1 id="description">Software Engineer &<br />Digital Artist</h1>
 
@@ -42,7 +41,7 @@
 
 		<!-- the tablet and phone version will be the next page -->
 		<p id="bio" class="only-desktop">
-			Heya! I'm a software engineer, ML researcher, and digital artist from the bay area, and my
+			Heya! I"m a software engineer, ML researcher, and digital artist from the bay area, and my
 			goal is to utilize these three passion into making awesome projects! When it comes to bulding
 			them, I have many tools I like to use: SvelteKit, NestJS, Pytorch, and Numpy to name of few;
 			Although I an always learning more!
@@ -55,36 +54,13 @@
 	</section>
 
 	<section id="graphics-container">
-		<img class="no-drag image-graphics" src="/images/raster/cherry-blossoms.webp" alt="" />
+		<img id="image-graphics" class="no-drag" src="/images/raster/cherry-blossoms.webp" alt="" />
 
 		<img id="fox-black" class="fox" src="/images/svg/fox-black.svg" alt="" />
 		<img id="fox-white" class="fox" src="/images/svg/fox-white.svg" alt="" />
+
+		<h1 id="fake-statement" class="exclude-desktop">LEMON<br />FOXMERE</h1>
 	</section>
-
-	<svg id="clip-svg" viewBox="0 0 1 1">
-		<defs>
-			<clipPath clipPathUnits="objectBoundingBox" id="clip-path-general">
-				<path class="st0" d="M0.4,0L0,0.5L0.5,1l0.1-0.4L1,0.2L0.4,0z" />
-			</clipPath>
-
-			<!-- every object needs its own clip because of translation and shit. Iunno -->
-			<clipPath
-				style="transform: translateX(45.7px)"
-				clipPathUnits="objectBoundingBox"
-				id="clip-path-fox"
-			>
-				<path class="st0" d="M0.4,0L0,0.5L0.5,1l0.1-0.4L1,0.2L0.4,0z" />
-			</clipPath>
-
-			<clipPath
-				style="transform: translateX(45.7px)"
-				clipPathUnits="objectBoundingBox"
-				id="clip-path-text"
-			>
-				<path class="st0" d="M0.4,0L0,0.5L0.5,1l0.1-0.4L1,0.2L0.4,0z" />
-			</clipPath>
-		</defs>
-	</svg>
 </main>
 
 <style lang="scss">
@@ -92,11 +68,13 @@
 
 	main {
 		@extend .page-container;
-		// border: 2px solid red;
 
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
+		position: relative;
+		overflow: visible;
 
 		#graphics-container {
 			position: relative;
@@ -109,7 +87,7 @@
 			height: auto;
 			aspect-ratio: 1/0.9027484144;
 
-			// border: 2px solid blue;
+			// border: 2px solid green;
 
 			svg {
 				position: absolute;
@@ -117,35 +95,65 @@
 				height: 100%;
 			}
 
-			.image-graphics {
+			#image-graphics {
 				display: block;
 				object-fit: cover;
 
 				z-index: 2;
 
-				-webkit-clip-path: url(#clip-path-general);
-				clip-path: url(#clip-path-general);
+				-webkit-clip-path: polygon(40% 0%, 0% 50%, 50% 100%, 60% 60%, 100% 20%, 40% 0%);
+				clip-path: polygon(40% 0%, 0% 50%, 50% 100%, 60% 60%, 100% 20%, 40% 0%);
 
 				width: 100%;
 				height: 100%;
 			}
 
 			.fox {
+				$fox-positional-offset-x: 40px;
+				$fox-positional-offset-y: 0px;
+
 				position: absolute;
 				width: 100%;
 				height: 100%;
 
-				transform: translateX(-40px);
+				transform: translateX(-$fox-positional-offset-x);
 
 				&#fox-black {
 					z-index: 1;
 				}
 				&#fox-white {
-					-webkit-clip-path: url(#clip-path-fox);
-					clip-path: url(#clip-path-fox);
+					-webkit-clip-path: polygon(
+						calc(40% + $fox-positional-offset-x) $fox-positional-offset-y,
+						$fox-positional-offset-x calc(50% + $fox-positional-offset-y),
+						calc(50% + $fox-positional-offset-x) calc(100% + $fox-positional-offset-y),
+						calc(60% + $fox-positional-offset-x) calc(60% + $fox-positional-offset-y),
+						calc(100% + $fox-positional-offset-x) calc(20% + $fox-positional-offset-y),
+						calc(40% + $fox-positional-offset-x) $fox-positional-offset-y
+					);
+					clip-path: polygon(
+						calc(40% + $fox-positional-offset-x) $fox-positional-offset-y,
+						$fox-positional-offset-x calc(50% + $fox-positional-offset-y),
+						calc(50% + $fox-positional-offset-x) calc(100% + $fox-positional-offset-y),
+						calc(60% + $fox-positional-offset-x) calc(60% + $fox-positional-offset-y),
+						calc(100% + $fox-positional-offset-x) calc(20% + $fox-positional-offset-y),
+						calc(40% + $fox-positional-offset-x) $fox-positional-offset-y
+					);
+
+					// transform: translateX(-40px);
+					// opacity: 0.5;
 
 					z-index: 3;
 				}
+			}
+
+			#fake-statement {
+				font-family: "Panchang";
+
+				font-size: 90px;
+				line-height: 0.9em;
+
+				color: $black;
+				letter-spacing: -2.5px;
 			}
 		}
 
@@ -163,9 +171,6 @@
 
 				color: $black;
 				letter-spacing: -2.5px;
-			}
-			#fake-statement {
-				@extend #statement;
 			}
 
 			#description {
@@ -270,42 +275,64 @@
 
 			#graphics-container {
 				position: absolute;
-				right: -36vh;
-				top: 36px;
-				margin-left: 60px;
+				left: 0px;
+				bottom: 192px;
+				margin-left: calc(100vw - 600px);
+				width: 80vh;
 
-				width: auto;
-				height: 80vh;
-			}
+				#fake-statement {
+					$text-positional-offset-x: calc(100vw - 635px);
+					$text-positional-offset-y: 120px;
 
-			#clip-svg {
-				position: absolute;
-				width: auto;
-				height: 80vh;
+					position: absolute;
+					z-index: 3;
+
+					width: 100%;
+					height: 100%;
+
+					display: flex;
+					align-items: flex-end;
+
+					font-size: min(10vw, 100px);
+
+					// transform-origin: right;
+					// transform: translate(calc(-100vw + 52.6vh + 35px), calc(20vh - 298.5px));
+					transform: translate(calc(600px - 100vw + 35px), -120px);
+
+					position: absolute;
+					color: $white;
+
+					// background-color: green;
+
+					-webkit-clip-path: polygon(
+						calc(40% + $text-positional-offset-x) calc(0% + $text-positional-offset-y),
+						$text-positional-offset-x calc(50% + $text-positional-offset-y),
+						calc(50% + $text-positional-offset-x) calc(100% + $text-positional-offset-y),
+						calc(60% + $text-positional-offset-x) calc(60% + $text-positional-offset-y),
+						calc(100% + $text-positional-offset-x) calc(20% + $text-positional-offset-y),
+						calc(40% + $text-positional-offset-x) calc(0% + $text-positional-offset-y)
+					);
+					clip-path: polygon(
+						calc(40% + $text-positional-offset-x) $text-positional-offset-y,
+						$text-positional-offset-x calc(50% + $text-positional-offset-y),
+						calc(50% + $text-positional-offset-x) calc(100% + $text-positional-offset-y),
+						calc(60% + $text-positional-offset-x) calc(60% + $text-positional-offset-y),
+						calc(100% + $text-positional-offset-x) calc(20% + $text-positional-offset-y),
+						calc(40% + $text-positional-offset-x) calc(0% + $text-positional-offset-y)
+					);
+				}
 			}
 
 			#text-container {
 				position: absolute;
-				bottom: 115px; // 35 + 10 + 50 + 20
+				bottom: 165px; // 35 + 10 + 50 + 70
+				left: 0px;
+				padding: 0px 35px;
+				box-sizing: border-box;
 
 				#statement {
 					// font-size: 48px;
-					font-size: min(11vw, 100px);
-				}
-
-				#fake-statement {
-					position: absolute;
-
-					font-size: min(11vw, 100px);
-
-					opacity: 0.5;
-					position: absolute;
-					color: red;
-
-					-webkit-clip-path: url(#clip-path-text);
-					clip-path: url(#clip-path-text);
-
-					top: 0px;
+					font-size: min(10vw, 100px);
 				}
 
 				#description {
@@ -320,6 +347,121 @@
 
 						&#github {
 							margin-right: 24px;
+						}
+					}
+				}
+
+				#bio {
+					margin-top: 55px;
+					max-width: 440px;
+
+					font-size: 18px;
+				}
+			}
+		}
+
+		@media screen and (max-width: $mobile-width) {
+			#graphics-container {
+				position: absolute;
+				left: 0px;
+				bottom: 190px;
+				margin-left: calc(100vw - 340px);
+				width: 80vh;
+				aspect-ratio: 1/1; // slight change in sizing ratio
+
+				#fake-statement {
+					$text-positional-offset-x: calc(100vw - 340px);
+					$text-positional-offset-y: 116px;
+
+					position: absolute;
+					z-index: 3;
+
+					width: 100%;
+					height: 100%;
+
+					display: flex;
+					align-items: flex-end;
+
+					font-size: min(11.5vw, 100px);
+
+					// transform-origin: right;
+					// transform: translate(calc(-100vw + 52.6vh + 35px), calc(20vh - 298.5px));
+					transform: translate(calc(305px - 100vw + 35px), -116px);
+
+					position: absolute;
+					color: $white;
+
+					// background-color: green;
+
+					-webkit-clip-path: polygon(
+						calc(40% + $text-positional-offset-x) calc(0% + $text-positional-offset-y),
+						$text-positional-offset-x calc(50% + $text-positional-offset-y),
+						calc(50% + $text-positional-offset-x) calc(100% + $text-positional-offset-y),
+						calc(60% + $text-positional-offset-x) calc(60% + $text-positional-offset-y),
+						calc(100% + $text-positional-offset-x) calc(20% + $text-positional-offset-y),
+						calc(40% + $text-positional-offset-x) calc(0% + $text-positional-offset-y)
+					);
+					clip-path: polygon(
+						calc(40% + $text-positional-offset-x) $text-positional-offset-y,
+						$text-positional-offset-x calc(50% + $text-positional-offset-y),
+						calc(50% + $text-positional-offset-x) calc(100% + $text-positional-offset-y),
+						calc(60% + $text-positional-offset-x) calc(60% + $text-positional-offset-y),
+						calc(100% + $text-positional-offset-x) calc(20% + $text-positional-offset-y),
+						calc(40% + $text-positional-offset-x) calc(0% + $text-positional-offset-y)
+					);
+				}
+
+				.fox {
+					$fox-positional-offset-x: 40px;
+					$fox-positional-offset-y: 20px;
+
+					transform: translate(-$fox-positional-offset-x, -$fox-positional-offset-y);
+
+					&#fox-white {
+						-webkit-clip-path: polygon(
+							calc(40% + $fox-positional-offset-x) $fox-positional-offset-y,
+							$fox-positional-offset-x calc(50% + $fox-positional-offset-y),
+							calc(50% + $fox-positional-offset-x) calc(100% + $fox-positional-offset-y),
+							calc(60% + $fox-positional-offset-x) calc(60% + $fox-positional-offset-y),
+							calc(100% + $fox-positional-offset-x) calc(20% + $fox-positional-offset-y),
+							calc(40% + $fox-positional-offset-x) $fox-positional-offset-y
+						);
+						clip-path: polygon(
+							calc(40% + $fox-positional-offset-x) $fox-positional-offset-y,
+							$fox-positional-offset-x calc(50% + $fox-positional-offset-y),
+							calc(50% + $fox-positional-offset-x) calc(100% + $fox-positional-offset-y),
+							calc(60% + $fox-positional-offset-x) calc(60% + $fox-positional-offset-y),
+							calc(100% + $fox-positional-offset-x) calc(20% + $fox-positional-offset-y),
+							calc(40% + $fox-positional-offset-x) $fox-positional-offset-y
+						);
+					}
+				}
+			}
+
+			#text-container {
+				bottom: 180px; // 35 + 10 + 50 + 70
+				padding: 0px;
+				box-sizing: border-box;
+
+				#statement {
+					font-size: min(11.5vw, 100px);
+				}
+
+				#description {
+					font-size: 22px;
+					line-height: 28px;
+					margin-top: 12px;
+				}
+
+				#social-container {
+					margin-top: 35px;
+					button {
+						width: 24px;
+						height: 24px;
+						margin-right: 28px;
+
+						&#github {
+							margin-right: 32px;
 						}
 					}
 				}
