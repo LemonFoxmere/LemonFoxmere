@@ -364,7 +364,7 @@
 			#graphics-container {
 				position: absolute;
 				left: 0px;
-				bottom: 190px;
+				bottom: 210px;
 				margin-left: calc(100vw - 340px);
 				width: 80vh;
 				aspect-ratio: 1/1; // slight change in sizing ratio
@@ -439,7 +439,7 @@
 			}
 
 			#text-container {
-				bottom: 180px; // 35 + 10 + 50 + 70
+				bottom: 200px; // 35 + 10 + 50 + 90
 				padding: 0px;
 				box-sizing: border-box;
 
