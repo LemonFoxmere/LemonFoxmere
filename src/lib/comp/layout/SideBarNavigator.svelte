@@ -121,6 +121,8 @@
 		min-width: 96px;
 		height: 100vh;
 
+		z-index: 100;
+
 		#selector {
 			width: 100%;
 			height: 100px;
@@ -187,14 +189,21 @@
 				background: none;
 				padding: 30px 26px 30px 0px;
 
+				transition: opacity 150ms ease-in-out;
+
+				cursor: pointer;
+
 				p {
 					writing-mode: vertical-rl;
 					margin: 0px;
 					line-height: 0px;
 
 					font-size: 22px;
-
 					transform: scale(-1, -1); // flip it right side up
+				}
+
+				&:hover {
+					opacity: 0.5;
 				}
 			}
 		}

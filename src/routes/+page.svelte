@@ -1,9 +1,12 @@
 <script lang="ts">
 	import Landing from "$lib/comp/pages/Landing.svelte";
+	import Projects from "$lib/comp/pages/Projects.svelte";
 </script>
 
 <main>
 	<Landing />
+
+	<Projects />
 </main>
 
 <style lang="scss">

@@ -3,7 +3,7 @@
 
 <main>
 	<section id="text-container">
-		<h1 id="statement">LEMON<br />FOXMERE</h1>
+		<h1 id="statement">LEMON.<br />FOXMERE</h1>
 
 		<h1 id="description">Software Engineer &<br />Digital Artist</h1>
 
@@ -41,7 +41,7 @@
 
 		<!-- the tablet and phone version will be the next page -->
 		<p id="bio" class="only-desktop">
-			Heya! I"m a software engineer, ML researcher, and digital artist from the bay area, and my
+			Heya! I'm a software engineer, ML researcher, and digital artist from the bay area, and my
 			goal is to utilize these three passion into making awesome projects! When it comes to bulding
 			them, I have many tools I like to use: SvelteKit, NestJS, Pytorch, and Numpy to name of few;
 			Although I an always learning more!
@@ -54,12 +54,12 @@
 	</section>
 
 	<section id="graphics-container">
-		<img id="image-graphics" class="no-drag" src="/images/raster/cherry-blossoms.webp" alt="" />
+		<img id="image-graphics" class="no-drag" src="/images/raster/cherry-blossoms.jpeg" alt="" />
 
 		<img id="fox-black" class="fox" src="/images/svg/fox-black.svg" alt="" />
 		<img id="fox-white" class="fox" src="/images/svg/fox-white.svg" alt="" />
 
-		<h1 id="fake-statement" class="exclude-desktop">LEMON<br />FOXMERE</h1>
+		<h1 id="fake-statement" class="exclude-desktop">LEMON.<br />FOXMERE</h1>
 	</section>
 </main>
 
@@ -148,8 +148,9 @@
 
 			#fake-statement {
 				font-family: "Panchang";
+				font-weight: 300;
 
-				font-size: 90px;
+				font-size: 100px;
 				line-height: 0.9em;
 
 				color: $black;
@@ -165,8 +166,9 @@
 
 			#statement {
 				font-family: "Panchang";
+				font-weight: 300;
 
-				font-size: 90px;
+				font-size: 100px;
 				line-height: 0.9em;
 
 				color: $black;
@@ -237,12 +239,15 @@
 		@media screen and (max-width: $small-desktop-width) {
 			#graphics-container {
 				margin-left: 10px;
+				margin-right: 30px;
 				width: clamp(600px, 45%, 700px);
 			}
 
 			#text-container {
+				margin-left: 30px;
+
 				#statement {
-					font-size: 64px;
+					font-size: 75px;
 				}
 
 				#description {
@@ -329,6 +334,8 @@
 				left: 0px;
 				padding: 0px 35px;
 				box-sizing: border-box;
+
+				margin-left: 0px;
 
 				#statement {
 					// font-size: 48px;

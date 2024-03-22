@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
 	import { writable } from "svelte/store";
+	import ContentBackgroundEffect from "./../lib/comp/layout/ContentBackgroundEffect.svelte";
 	import MobileNavigator from "./../lib/comp/layout/MobileNavigator.svelte";
 	import SideBarNavigator from "./../lib/comp/layout/SideBarNavigator.svelte";
 
@@ -27,6 +28,7 @@
 
 	<section id="content">
 		<slot />
+		<ContentBackgroundEffect />
 	</section>
 
 	<!-- bottom bar navigation (phone and tablet only) -->
@@ -45,8 +47,14 @@
 		height: 100%;
 
 		#content {
+			position: relative;
+
 			padding-left: 96px;
 			box-sizing: border-box;
+
+			// overflow: hidden;
+
+			z-index: 2;
 		}
 
 		@media screen and (max-width: $small-desktop-width) {
@@ -73,8 +81,12 @@
 	}
 
 	#footer-container {
+		position: absolute;
+
 		width: 100%;
 		height: 400px;
 		background-color: $black;
+
+		z-index: 2;
 	}
 </style>
