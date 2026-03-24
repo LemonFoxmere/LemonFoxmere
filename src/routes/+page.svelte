@@ -38,8 +38,8 @@
 <CornerTextDeco location="br" {hash}></CornerTextDeco>
 
 <!-- top and bottom gradients -->
-<div id="top-gradient"></div>
-<div id="bottom-gradient"></div>
+<div id="top-gradient" class="phone-hidden"></div>
+<div id="bottom-gradient" class="phone-hidden"></div>
 
 <style lang="scss">
 	@use "$static/stylesheets/guideline" as *;
@@ -56,7 +56,7 @@
 		align-items: center;
 
 		@media screen and (width <= $mobile-width) {
-			padding: 100px 30px;
+			padding: 0px 30px;
 		}
 	}
 

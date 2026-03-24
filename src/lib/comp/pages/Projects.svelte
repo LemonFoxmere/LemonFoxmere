@@ -39,11 +39,27 @@
 		}
 	});
 
+	function noTouchScroll(node: HTMLElement) {
+		const prevent = (e: TouchEvent) => e.preventDefault();
+		node.addEventListener("touchmove", prevent, { passive: false });
+		return { destroy: () => node.removeEventListener("touchmove", prevent) };
+	}
+
 	const num_projects = 4;
 	let current_project_idx = $state(0);
+
+	let card_ref_0: any = null;
+	let card_ref_1: any = null;
+	let card_ref_2: any = null;
+	let card_ref_3: any = null;
+
+	function openActiveModal() {
+		[card_ref_0, card_ref_1, card_ref_2, card_ref_3][current_project_idx]?.openModal?.();
+	}
 </script>
 
 <main
+	use:noTouchScroll
 	class="{!content_visible ? 'hidden' : ''} {!on_page ? 'offpage' : ''} {!animate
 		? 'no-transition'
 		: ''}"
@@ -57,7 +73,7 @@
 				<section id="heading">
 					<h1>
 						<span>A</span><span>c</span><span>t</span>
-						<span>0</span><span>2</span><span>:</span>
+						<span>0</span><span>2</span><span class="phone-hidden">:</span>
 					</h1>
 					<h1 class="thin">
 						<span>P</span><span>r</span><span>o</span><span>j</span><span>e</span><span
@@ -65,13 +81,19 @@
 						><span>t</span><span>s</span>
 					</h1>
 				</section>
-				<Separator visible={content_visible} />
+				<div class="phone-hidden">
+					<Separator visible={content_visible} />
+				</div>
+				<div class="phone-only">
+					<Separator visible={content_visible} clr="secondary" />
+				</div>
 			</section>
 		</section>
 
 		<section id="body">
 			<div id="projects">
 				<ProjectTextCard
+					bind:this={card_ref_0}
 					visible={current_project_idx === 0 && content_visible}
 					title="RoboDog Project"
 				>
@@ -93,6 +115,7 @@
 					</p>
 				</ProjectTextCard>
 				<ProjectTextCard
+					bind:this={card_ref_1}
 					visible={current_project_idx === 1 && content_visible}
 					title="Autonomous Drone Racing"
 				>
@@ -107,16 +130,18 @@
 					</p>
 				</ProjectTextCard>
 				<ProjectTextCard
+					bind:this={card_ref_2}
 					visible={current_project_idx === 2 && content_visible}
 					title="This Website"
 				>
 					<p>
-						Built with SvelteKit and SCSS, all the contents and animations that you see
-						are hand-crafted by yours truly :)
+						Built with SvelteKit, all the contents and animations that you see are
+						hand-crafted by yours truly with SCSS or Procreate :)
 					</p>
 					<p>No AI was used in any part of this website.</p>
 				</ProjectTextCard>
 				<ProjectTextCard
+					bind:this={card_ref_3}
 					visible={current_project_idx === 3 && content_visible}
 					title="DeepFusion"
 				>
@@ -141,14 +166,29 @@
 			</div>
 
 			<section id="controls">
+				<!-- phone readmore -->
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<a
+					id="read-more"
+					class="phone-only"
+					onclick={(e) => {
+						e.preventDefault();
+						openActiveModal();
+					}}>Read More</a
+				>
 				<CarouselController
 					num_elements={num_projects}
 					bind:current_idx={current_project_idx}
 				/>
-				<CarouselIndicator
-					num_elements={num_projects}
-					bind:current_idx={current_project_idx}
-				/>
+
+				<!-- desktop version -->
+				<div class="phone-hidden">
+					<CarouselIndicator
+						num_elements={num_projects}
+						bind:current_idx={current_project_idx}
+					/>
+				</div>
 			</section>
 		</section>
 	</section>
@@ -166,9 +206,8 @@
 		/>
 		<ProjectImageCard
 			visible={current_project_idx === 2 && content_visible}
-			uri="images/raster/lemon_light.png"
+			uri="images/raster/landing_page.jpg"
 			alt="This Website"
-			fit_image={true}
 		/>
 		<ProjectImageCard
 			visible={current_project_idx === 3 && content_visible}
@@ -176,6 +215,15 @@
 			alt="DeepFusion"
 			dark={true}
 		/>
+
+		<!-- phone version -->
+		<div id="mobile-indicator" class="phone-only">
+			<CarouselIndicator
+				num_elements={num_projects}
+				bind:current_idx={current_project_idx}
+				scheme={["invert", "primary", "invert", "primary"][current_project_idx]}
+			/>
+		</div>
 	</div>
 </main>
 
@@ -292,6 +340,17 @@
 						transform 700ms $out-generic;
 
 					transition-delay: 700ms;
+
+					#read-more {
+						font-weight: 600;
+						color: $token-surface-solid-accent;
+						text-decoration: underline;
+						cursor: pointer;
+
+						&:active {
+							opacity: 0.7;
+						}
+					}
 				}
 
 				#projects {
@@ -343,6 +402,115 @@
 			transition:
 				opacity 600ms $out-generic,
 				transform 700ms $out-generic;
+		}
+
+		@media screen and (width <= $mobile-width) {
+			$text-content-gap: 250px;
+
+			#content {
+				padding: 0;
+				padding-top: 20px;
+
+				width: calc(100% + 20px);
+				margin-left: -10px;
+				height: 100%;
+
+				#title {
+					z-index: 1;
+					#text {
+						align-items: center;
+						#heading {
+							justify-content: center;
+
+							h1:nth-child(2) {
+								@for $i from 1 through 8 {
+									span:nth-child(#{$i}) {
+										transition-delay: 20ms * ((8-$i) + 5);
+									}
+								}
+							}
+						}
+					}
+				}
+				#body {
+					height: $text-content-gap;
+					max-height: $text-content-gap;
+					margin-top: 0px;
+
+					row-gap: 10px;
+					justify-content: space-between;
+
+					padding: 20px 0px;
+
+					#controls {
+						padding: 0px 20px 0px 10px;
+					}
+
+					#projects {
+						flex: 1;
+						min-height: 0;
+					}
+				}
+			}
+
+			#graphics {
+				top: 0px;
+				left: 0px;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				width: 100%;
+				height: calc(100% - $text-content-gap);
+				transform: none;
+
+				pointer-events: none;
+
+				transition:
+					opacity 600ms $out-generic,
+					transform 700ms $out-generic,
+					filter 700ms $out-generic;
+
+				// Indicator pinned to bottom-left of the image area
+				#mobile-indicator {
+					position: absolute;
+					bottom: 20px;
+					left: 25px;
+					z-index: 1;
+				}
+			}
+
+			&.hidden {
+				#content {
+					#title {
+						#text {
+							#heading {
+								h1:nth-child(2) {
+									@for $i from 1 through 8 {
+										span:nth-child(#{$i}) {
+											transform: translateX(3px * (8-$i))
+												scaleX(0.8) !important;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				#graphics {
+					transform: none !important;
+
+					transform: scale(1.05) !important;
+					filter: blur(5px);
+
+					transition:
+						opacity 1000ms $in-out-cubic,
+						transform 600ms $in-cubic,
+						filter 600ms $out-generic !important;
+				}
+			}
 		}
 
 		&.hidden {

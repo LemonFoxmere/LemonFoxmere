@@ -30,6 +30,10 @@
 			cursor: pointer;
 			transition: scale 300ms $out-cubic;
 
+			@media screen and (width <= $mobile-width) {
+				width: 48px;
+			}
+
 			&:hover {
 				@media (hover: hover) {
 					background-color: $token-surface-solid-accent;

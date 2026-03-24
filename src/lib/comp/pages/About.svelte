@@ -42,35 +42,46 @@
 		? 'no-transition'
 		: ''}"
 >
-	<div id="nav">
-		<BackButton />
-	</div>
-	<section id="text">
-		<section id="heading">
-			<h1>
-				<span>A</span><span>c</span><span>t</span>
-				<span>0</span><span>1</span><span>:</span>
-			</h1>
-			<h1 class="thin">
-				<span>W</span><span>h</span><span>o</span> <span>A</span><span>r</span><span>e</span
-				> <span>Y</span><span>o</span><span>u</span><span>?</span>
-			</h1>
-		</section>
-		<Separator visible={content_visible} />
-		<section id="body">
-			<p>
-				Hey there, I'm Lemon! I'm a robotics researcher and student with a passion for UI/UX
-				design and visual art. Currently, I'm studying at UCSC as a Computer Science
-				undergrad while working with Dr. Steve McGuire in the Human Aware Robotics
-				Exploration (HARE) Lab.
-			</p>
-			<p>
-				My main research interest is in the field of Multi-Task Reinforcement Learning.
-				Specifically, how we can train generalized robotics controllers that are capable of
-				a multitude of behaviors while maintaining high levels of performance and
-				robustness. If this sounds interesting to you, I'd love to have a talk together!
-			</p>
-			<p>When I'm not playing with robots, I like to cook and draw funny animal people.</p>
+	<section id="text-content">
+		<div id="nav">
+			<BackButton />
+		</div>
+		<section id="text">
+			<section id="heading">
+				<h1>
+					<span>A</span><span>c</span><span>t</span>
+					<span>0</span><span>1</span><span>:</span>
+				</h1>
+				<h1 class="thin">
+					<span>
+						<span>W</span><span>h</span><span>o</span>
+					</span>
+					<span>
+						<span>A</span><span>r</span><span>e</span>
+					</span>
+					<span>
+						<span>Y</span><span>o</span><span>u</span><span>?</span>
+					</span>
+				</h1>
+			</section>
+			<Separator visible={content_visible} />
+			<section id="body">
+				<p>
+					Hey there, I'm Lemon! I'm a robotics researcher and student with a passion for
+					UI/UX design and visual art. Currently, I'm studying at UCSC as a Computer
+					Science undergrad while working with Dr. Steve McGuire in the Human Aware
+					Robotics Exploration (HARE) Lab.
+				</p>
+				<p>
+					My main research interest is in the field of Multi-Task Reinforcement Learning.
+					Specifically, how we can train generalized robotics controllers that are capable
+					of a multitude of behaviors while maintaining high levels of performance and
+					robustness. If this sounds interesting to you, I'd love to have a talk together!
+				</p>
+				<p>
+					When I'm not playing with robots, I like to cook and draw funny animal people.
+				</p>
+			</section>
 		</section>
 	</section>
 
@@ -95,87 +106,115 @@
 
 		width: min(650px + 300px, 100%);
 
-		#nav {
-			z-index: 1;
-			transition-property: opacity, transform;
-			transition: 500ms $out-generic;
-		}
-
-		#text {
+		#text-content {
 			display: flex;
 			flex-direction: column;
-			row-gap: 20px;
-			width: 100%;
-			padding-right: 35%;
+			justify-content: center;
+			row-gap: 10px;
 
-			// border: 1px solid blue;
-			// padding-right: 25%;
-
-			z-index: 1; // bring above graphics
-
-			#heading {
-				display: inline-flex;
-				flex-wrap: wrap;
-				column-gap: 1rem;
-
-				width: 100%;
-
-				span {
-					display: inline-block;
-					padding: 0;
-					margin: 0;
-
-					transform-origin: left;
-
-					transition:
-						font-weight 500ms $out-generic,
-						opacity 400ms $out-generic,
-						transform 700ms $out-generic;
-				}
-
-				h1 {
-					margin: 0;
-					padding: 0;
-					white-space: nowrap;
-					white-space: nowrap;
-				}
-
-				h1:nth-child(1) {
-					@for $i from 1 through 6 {
-						span:nth-child(#{$i}) {
-							transition-delay: 20ms * $i;
-						}
-					}
-				}
-				h1:nth-child(2) {
-					@for $i from 1 through 10 {
-						span:nth-child(#{$i}) {
-							transition-delay: 20ms * ($i + 6);
-						}
-					}
-				}
+			#nav {
+				z-index: 1;
+				transition-property: opacity, transform;
+				transition: 500ms $out-generic;
 			}
 
-			#body {
+			#text {
 				display: flex;
 				flex-direction: column;
-				row-gap: 10px;
-
+				row-gap: 20px;
 				width: 100%;
+				padding-right: 35%;
 
-				text-shadow:
-					0px 0px 20px $token-surface-solid-primary,
-					0px 0px 20px $token-surface-solid-primary,
-					0px 0px 20px $token-surface-solid-primary;
+				// border: 1px solid blue;
+				// padding-right: 25%;
 
-				p {
-					transition:
-						opacity 500ms $out-generic,
-						transform 700ms $out-generic;
+				z-index: 1; // bring above graphics
 
-					@for $i from 1 through 3 {
-						&:nth-child(#{$i}) {
-							transition-delay: 100ms * ($i - 1) + 600ms;
+				#heading {
+					display: inline-flex;
+					flex-wrap: wrap;
+					column-gap: 1rem;
+
+					width: 100%;
+
+					span {
+						display: inline-block;
+						padding: 0;
+						margin: 0;
+
+						white-space: nowrap;
+
+						transform-origin: left;
+
+						transition:
+							font-weight 500ms $out-generic,
+							opacity 400ms $out-generic,
+							transform 700ms $out-generic;
+					}
+
+					h1 {
+						margin: 0;
+						padding: 0;
+						white-space: nowrap;
+					}
+
+					h1:nth-child(1) {
+						@for $i from 1 through 6 {
+							span:nth-child(#{$i}) {
+								transition-delay: 20ms * $i;
+							}
+						}
+					}
+					h1.thin {
+						> span {
+							transition: none;
+						}
+
+						> span:nth-child(1) {
+							@for $i from 1 through 3 {
+								> span:nth-child(#{$i}) {
+									transition-delay: 20ms * ($i + 6);
+								}
+							}
+						}
+						> span:nth-child(2) {
+							@for $i from 1 through 3 {
+								> span:nth-child(#{$i}) {
+									transition-delay: 20ms * ($i + 9);
+								}
+							}
+						}
+						> span:nth-child(3) {
+							@for $i from 1 through 4 {
+								> span:nth-child(#{$i}) {
+									transition-delay: 20ms * ($i + 12);
+								}
+							}
+						}
+					}
+				}
+
+				#body {
+					display: flex;
+					flex-direction: column;
+					row-gap: 10px;
+
+					width: 100%;
+
+					text-shadow:
+						0px 0px 20px $token-surface-solid-primary,
+						0px 0px 20px $token-surface-solid-primary,
+						0px 0px 20px $token-surface-solid-primary;
+
+					p {
+						transition:
+							opacity 500ms $out-generic,
+							transform 700ms $out-generic;
+
+						@for $i from 1 through 3 {
+							&:nth-child(#{$i}) {
+								transition-delay: 100ms * ($i - 1) + 600ms;
+							}
 						}
 					}
 				}
@@ -192,7 +231,7 @@
 			// border: 1px solid red;
 
 			transition:
-				opacity 700ms $out-generic,
+				opacity 600ms $out-generic,
 				transform 700ms $out-generic;
 			transition-delay: 700ms;
 
@@ -201,51 +240,131 @@
 			}
 		}
 
+		@media screen and (width <= $mobile-width) {
+			flex-direction: column-reverse;
+			justify-content: flex-end;
+
+			#text-content {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				row-gap: 10px;
+
+				#nav {
+					z-index: 1;
+					transition-property: opacity, transform;
+					transition: 500ms $out-generic;
+				}
+
+				#text {
+					padding-right: 0;
+					padding-bottom: 100px;
+
+					#heading {
+						h1 {
+							white-space: wrap;
+						}
+					}
+				}
+			}
+
+			#graphics {
+				$w_extend: 200px;
+
+				position: relative;
+				width: calc(100% + $w_extend);
+
+				margin-left: -$w_extend + 30px;
+
+				transform-origin: calc(50% + $w_extend/2), 50%;
+
+				transition:
+					opacity 600ms $out-generic,
+					transform 700ms $out-generic,
+					filter 700ms $out-generic;
+				transition-delay: 0ms;
+
+				img {
+					width: 100%;
+				}
+			}
+
+			&.hidden {
+				#graphics {
+					transform: scale(1.1) !important;
+					filter: blur(5px) brightness(1.5);
+				}
+			}
+		}
+
 		&.hidden {
 			* {
 				pointer-events: none;
 			}
 
-			#nav {
-				opacity: 0;
-				pointer-events: none;
-				transform: translateX(-10px);
-			}
-
-			#text {
-				#heading {
-					h1 {
-						span {
-							font-weight: 100;
-							opacity: 0;
-						}
-					}
-
-					h1:nth-child(1) {
-						@for $i from 1 through 6 {
-							span:nth-child(#{$i}) {
-								transform: translateX(-3px * ($i - 1)) scaleX(0.8);
-							}
-						}
-					}
-
-					h1:nth-child(2) {
-						@for $i from 1 through 10 {
-							span:nth-child(#{$i}) {
-								transform: translateX(-3px * ($i + 5)) scaleX(0.8);
-							}
-						}
-					}
+			#text-content {
+				#nav {
+					opacity: 0;
+					pointer-events: none;
+					transform: translateX(-10px);
 				}
 
-				#body {
-					p {
-						opacity: 0;
-						transform: translateY(10px);
+				#text {
+					#heading {
+						h1 {
+							span {
+								font-weight: 100;
+								opacity: 0;
+							}
+						}
 
-						@for $i from 1 through 3 {
-							&:nth-child(#{$i}) {
-								transition-delay: 100ms * ($i - 1);
+						h1:nth-child(1) {
+							@for $i from 1 through 6 {
+								span:nth-child(#{$i}) {
+									transform: translateX(-3px * ($i - 1)) scaleX(0.8);
+								}
+							}
+						}
+
+						h1.thin {
+							> span {
+								opacity: 1;
+								font-weight: inherit;
+								transform: none;
+							}
+							> span:nth-child(1) {
+								@for $i from 1 through 3 {
+									> span:nth-child(#{$i}) {
+										transform: translateX(-3px * ($i + 5)) scaleX(0.8);
+									}
+								}
+							}
+							> span:nth-child(2) {
+								@for $i from 1 through 3 {
+									> span:nth-child(#{$i}) {
+										transform: translateX(-3px * ($i + 8)) scaleX(0.8);
+									}
+								}
+							}
+							> span:nth-child(3) {
+								@for $i from 1 through 4 {
+									> span:nth-child(#{$i}) {
+										transform: translateX(-3px * ($i + 11)) scaleX(0.8);
+									}
+								}
+							}
+						}
+					}
+
+					#body {
+						p {
+							opacity: 0;
+							transform: translateY(10px);
+
+							@for $i from 1 through 3 {
+								&:nth-child(#{$i}) {
+									transition-delay: 100ms * ($i - 1);
+								}
 							}
 						}
 					}

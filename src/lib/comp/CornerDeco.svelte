@@ -4,7 +4,7 @@
 	};
 	let { location }: Props = $props();
 
-	const last_updated_date = "March 23rd, 2026";
+	const last_updated_date = "March 24th, 2026";
 </script>
 
 <main class="{location} phone-hidden no-drag">

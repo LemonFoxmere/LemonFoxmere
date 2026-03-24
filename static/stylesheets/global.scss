@@ -22,6 +22,8 @@ html {
 	background-color: $token-surface-solid-primary;
 	width: 100%;
 	height: 100%;
+
+    isolation: isolate;
 }
 
 img,

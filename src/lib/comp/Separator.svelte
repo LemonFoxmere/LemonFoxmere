@@ -52,6 +52,8 @@
 		aspect-ratio: 6498 / 667;
 		background-color: $c;
 
+		transition: background-color 700ms $out-generic;
+
 		-webkit-mask-image: url(/animation/separator.png);
 		mask-image: url(/animation/separator.png);
 		mask-repeat: no-repeat;

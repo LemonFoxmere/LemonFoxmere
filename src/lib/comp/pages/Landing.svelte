@@ -47,7 +47,7 @@
 >
 	<section id="text">
 		<section id="title">
-			<section id="connections">
+			<section id="connections" class="phone-hidden">
 				<span><Github /></span>
 				<span><Linkedin /></span>
 				<span><Email /></span>
@@ -63,7 +63,13 @@
 					><span>e</span>
 				</h1>
 			</section>
-			<p id="subheading">RL Robotics Researcher &nbsp;~&nbsp; Digital Artist</p>
+			<p id="subheading" class="phone-hidden">
+				RL Robotics Researcher &nbsp;~&nbsp; Digital Artist
+			</p>
+			<p id="subheading" class="phone-only">
+				<span style="white-space: nowrap">RL Robotics Researcher</span> &
+				<span style="white-space: nowrap">Digital Artist</span>
+			</p>
 		</section>
 		<Separator visible={content_visible} />
 		<section id="cta">
@@ -77,6 +83,13 @@
 				Art gallery
 			</a>
 		</section>
+
+		<!-- mobile version -->
+		<section id="connections" class="phone-only">
+			<span><Github /></span>
+			<span><Linkedin /></span>
+			<span><Email /></span>
+		</section>
 	</section>
 
 	<!-- graphics -->
@@ -87,6 +100,7 @@
 
 <style lang="scss">
 	@use "$static/stylesheets/guideline" as *;
+	@use "sass:math";
 
 	#content {
 		position: relative;
@@ -207,6 +221,92 @@
 			margin-top: -180px;
 			padding-left: 170px;
 			width: min(730px, 100%);
+		}
+
+		@media screen and (width <= $mobile-width) {
+			flex-direction: column-reverse;
+			justify-content: flex-end;
+
+			row-gap: 20px;
+
+			height: 100%;
+
+			#text {
+				position: relative;
+
+				display: flex;
+				flex-direction: column;
+				row-gap: 25px;
+
+				margin-top: auto;
+
+				// border: 1px solid red;
+
+				z-index: 1; // bring above graphics
+				#title {
+					#heading {
+						h1 {
+							white-space: nowrap;
+						}
+					}
+				}
+
+				#cta {
+					row-gap: 20px;
+					padding-bottom: 32px;
+				}
+
+				#connections {
+					display: flex;
+					position: absolute;
+					right: 4px;
+					bottom: 0px;
+
+					flex-direction: column;
+					row-gap: 20px;
+
+					> * {
+						transition: 700ms $out-generic;
+					}
+
+					@for $i from 1 through 3 {
+						> *:nth-child(#{$i}) {
+							transition-delay: 700ms + 100ms * (3 - $i);
+						}
+					}
+				}
+			}
+
+			#graphics {
+				$d: 25; // degrees
+				$k: math.sin(math.div($d * 3.1415, 180)) +
+					math.div(math.cos(math.div($d * 3.1415, 180)), 1.6);
+				$w_extend: 60px;
+
+				margin-top: calc((#{$k} * (100% + $w_extend) - (100% + $w_extend) / 1.6) / 3);
+				margin-bottom: calc((#{$k} * (100% + $w_extend) - (100% + $w_extend) / 1.6) / 3);
+
+				padding-left: unset;
+				margin-left: -($w_extend/2);
+				width: calc(100% + $w_extend);
+
+				transform: rotate(-#{$d}deg);
+			}
+
+			&.hidden {
+				#text {
+					#connections {
+						@for $i from 1 through 3 {
+							> *:nth-child(#{$i}) {
+								opacity: 0;
+								transition: 500ms $in-cubic;
+								transform: translateY(-20px) scale(0.9, 1.1);
+								transition-delay: 100ms * $i;
+							}
+						}
+					}
+				}
+			}
 		}
 
 		&.hidden {

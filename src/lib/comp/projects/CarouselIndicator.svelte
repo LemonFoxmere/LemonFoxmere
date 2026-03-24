@@ -2,7 +2,7 @@
 	type Props = {
 		current_idx: number;
 		num_elements: number;
-		scheme?: "primary" | "secondary" | "accent" | "invert";
+		scheme?: string;
 	};
 	let { current_idx = $bindable(), num_elements, scheme = "accent" }: Props = $props();
 </script>
@@ -53,7 +53,8 @@
 
 			transition:
 				opacity 500ms $out-generic,
-				clip-path 500ms $out-generic;
+				clip-path 500ms $out-generic,
+				background-color 700ms $out-generic;
 
 			&.active {
 				opacity: 1;

@@ -56,6 +56,7 @@
 		transition: opacity 1000ms $out-generic;
 
 		$blur-begin: 70%;
+		$blur-end: 100%;
 
 		img {
 			object-fit: cover;
@@ -66,8 +67,12 @@
 
 			border-radius: 50px 55px 55px 50px;
 
-			mask-image: linear-gradient(90deg, rgb(0, 0, 0) $blur-begin, transparent 100%);
-			-webkit-mask-image: linear-gradient(90deg, rgb(0, 0, 0) $blur-begin, transparent 100%);
+			mask-image: linear-gradient(90deg, rgb(0, 0, 0) $blur-begin, transparent $blur-end);
+			-webkit-mask-image: linear-gradient(
+				90deg,
+				rgb(0, 0, 0) $blur-begin,
+				transparent $blur-end
+			);
 		}
 
 		.blur-overlay {
@@ -81,8 +86,11 @@
 			border-radius: 50px 55px 55px 50px;
 
 			filter: blur(50px);
-			mask-image: linear-gradient(90deg, transparent $blur-begin, rgb(0, 0, 0) 100%);
-			-webkit-mask-image: linear-gradient(90deg, transparent $blur-begin rgb(0, 0, 0) 100%);
+			mask-image: linear-gradient(90deg, transparent $blur-begin, rgb(0, 0, 0) $blur-end);
+			-webkit-mask-image: linear-gradient(
+				90deg,
+				transparent $blur-begin rgb(0, 0, 0) $blur-end
+			);
 		}
 
 		.gradient-filter {
@@ -148,7 +156,7 @@
 
 		&.dark {
 			img {
-				opacity: 0.6;
+				opacity: 0.9;
 			}
 
 			.gradient-filter {
@@ -187,6 +195,149 @@
 				&#orange {
 					opacity: 0.2;
 					mix-blend-mode: overlay;
+				}
+			}
+		}
+
+		@media screen and (width <= $mobile-width) {
+			border-radius: 0px 0px 100px 0px;
+
+			$blur-begin: 45%;
+			$blur-end: 70%;
+
+			img {
+				border-radius: 0px 0px 100px 0px;
+
+				mask-image: linear-gradient(
+					0deg,
+					rgb(0, 0, 0) $blur-begin,
+					transparent $blur-end
+				) !important;
+				-webkit-mask-image: linear-gradient(
+					0deg,
+					rgb(0, 0, 0) $blur-begin,
+					transparent $blur-end
+				) !important;
+			}
+
+			.blur-overlay {
+				border-radius: 0px 0px 100px 0px;
+
+				filter: blur(20px);
+
+				mask-image: linear-gradient(
+					0deg,
+					transparent $blur-begin,
+					rgb(0, 0, 0) $blur-end
+				) !important;
+				-webkit-mask-image: linear-gradient(
+					0deg,
+					transparent $blur-begin rgb(0, 0, 0) $blur-end
+				) !important;
+			}
+
+			.gradient-filter {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 70%;
+
+				&#white {
+					background: linear-gradient(
+						180deg,
+						$token-surface-solid-primary 0%,
+						rgba($token-surface-solid-primary, 0.85) 15%,
+						rgba($token-surface-solid-primary, 0.65) 28%,
+						rgba($token-surface-solid-primary, 0.4) 42%,
+						rgba($token-surface-solid-primary, 0.18) 56%,
+						rgba($token-surface-solid-primary, 0.06) 68%,
+						transparent 70%
+					);
+				}
+				&#orange {
+					height: 100%;
+					background: linear-gradient(
+						0deg,
+						$token-surface-solid-accent 0%,
+						mix($token-surface-solid-primary, $token-surface-solid-accent, 18%) 22%,
+						mix($token-surface-solid-primary, $token-surface-solid-accent, 42%) 40%,
+						mix($token-surface-solid-primary, $token-surface-solid-accent, 64%) 58%,
+						mix($token-surface-solid-primary, $token-surface-solid-accent, 84%) 76%,
+						$token-surface-solid-primary 100%
+					);
+				}
+			}
+
+			&.fit-img {
+				img {
+					width: 90%;
+					height: 90%;
+					object-fit: contain;
+				}
+			}
+
+			&.dark {
+				img {
+					opacity: 0.7;
+				}
+				.gradient-filter {
+					&#white {
+						height: 100%;
+						background: linear-gradient(
+							180deg,
+							$token-surface-solid-primary 0%,
+							rgba(
+									mix(
+										$token-surface-solid-invert,
+										$token-surface-solid-primary,
+										15%
+									),
+									0.85
+								)
+								15%,
+							rgba(
+									mix(
+										$token-surface-solid-invert,
+										$token-surface-solid-primary,
+										28%
+									),
+									0.65
+								)
+								28%,
+							rgba(
+									mix(
+										$token-surface-solid-invert,
+										$token-surface-solid-primary,
+										42%
+									),
+									0.4
+								)
+								42%,
+							rgba(
+									mix(
+										$token-surface-solid-invert,
+										$token-surface-solid-primary,
+										56%
+									),
+									0.18
+								)
+								56%,
+							rgba(
+									mix(
+										$token-surface-solid-invert,
+										$token-surface-solid-primary,
+										68%
+									),
+									0.06
+								)
+								68%,
+							transparent 70%
+						);
+					}
+					&#orange {
+						opacity: 0.2;
+						mix-blend-mode: overlay;
+					}
 				}
 			}
 		}
