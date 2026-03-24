@@ -2,6 +2,11 @@
 	// import favicon_dark from "$lib/assets/favicon_dark.png";
 	import favicon_light from "$lib/assets/favicon_light.png";
 
+	import { dev } from "$app/environment";
+	import { injectAnalytics } from "@vercel/analytics/sveltekit";
+
+	injectAnalytics({ mode: dev ? "development" : "production" });
+
 	let { children } = $props();
 </script>
 
