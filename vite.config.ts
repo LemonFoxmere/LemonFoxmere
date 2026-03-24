@@ -1,6 +1,18 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { sveltekit } from "@sveltejs/kit/vite";
+import { defineConfig } from "vite";
 
 export default defineConfig({
-	plugins: [sveltekit()]
+	plugins: [sveltekit()],
+	server: {
+		port: 3000,
+		host: "0.0.0.0" // test on mobile locally
+	},
+	ssr: {
+		external: ["@xstate/svelte"]
+	},
+	build: {
+		rollupOptions: {
+			external: ["sharp"]
+		}
+	}
 });

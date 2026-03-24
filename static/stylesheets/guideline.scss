@@ -1,0 +1,112 @@
+// ========== PRIMITIVES
+
+// Grey
+$prim-clr-grey-10: #27100C;
+$prim-clr-grey-20: #7C5746;
+$prim-clr-grey-40: #AA8675;
+$prim-clr-grey-60: #C4ACA2;
+$prim-clr-grey-80: #DFD1CC;
+$prim-clr-grey-90: #F8EDE9;
+// Branding
+$prim-clr-orange: #F8895D;
+$prim-clr-brown: #261510;
+$prim-clr-cream: #FCEFE8;
+
+// ========== TOKENS
+
+// Text
+$token-text-primary: $prim-clr-grey-10;
+$token-text-secondary: $prim-clr-grey-20;
+$token-text-tertiary: $prim-clr-grey-40;
+$token-text-quaternary: $prim-clr-grey-60;
+$token-text-accent: $prim-clr-grey-80;
+$token-text-invert: $prim-clr-grey-90;
+// Surface / Solid
+$token-surface-solid-primary: $prim-clr-cream;
+$token-surface-solid-secondary: $token-text-quaternary;
+$token-surface-solid-accent: $prim-clr-orange;
+$token-surface-solid-invert: $prim-clr-brown;
+
+// ========== TRANSITION CURVES
+$in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+$in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+$in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+$in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+$in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+$out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1.0075);
+$out-quart: cubic-bezier(0.165, 0.84, 0.44, 1.0075);
+$out-quint: cubic-bezier(0.23, 1, 0.32, 1.002);
+$out-expo: cubic-bezier(0.19, 1, 0.22, 1.003);
+$out-circ: cubic-bezier(0.075, 0.82, 0.165, 1.0015);
+$out-generic: cubic-bezier(0.3, -0.01, 0.4, 1.004);
+$out-generic-expo: cubic-bezier(0.3, 1, 0.22, 1);
+$in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+$in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+$in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+$in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+$in-out-expo: cubic-bezier(1, 0, 0, 1);
+$in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+
+// ========== SIZING
+$mobile-width: 600px;
+$tablet-width: 1190px;
+
+// RESPONSIVE DESIGN
+.phone-only {
+    @media screen and (min-width: $mobile-width) {
+        display: none !important;
+    }
+}
+
+.phone-hidden {
+    @media screen and (max-width: $mobile-width) {
+        display: none !important;
+    }
+}
+
+.desktop-hidden {
+    @media screen and (min-width: $tablet-width) {
+        display: none !important;
+    }
+}
+
+.desktop-only {
+    @media screen and (max-width: $tablet-width) {
+        display: none !important;
+    }
+}
+
+// common comps
+button{
+    -webkit-tap-highlight-color: transparent;
+
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+a {
+	-webkit-tap-highlight-color: transparent;
+
+	&:active {
+		opacity: 0.8;
+	}
+
+	&.wrapper {
+		// no underline
+		text-decoration: none;
+	}
+}
+
+// GENERIC ELEMENT STYLES
+.no-drag {
+	-webkit-user-drag: none;
+	-moz-user-select: none;
+	user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
