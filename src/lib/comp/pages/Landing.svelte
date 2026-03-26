@@ -260,10 +260,10 @@
 					display: flex;
 					position: absolute;
 					right: 4px;
-					bottom: 0px;
+					bottom: 12px;
 
 					flex-direction: column;
-					row-gap: 20px;
+					row-gap: 12px;
 
 					> * {
 						transition: 700ms $out-generic;
@@ -284,7 +284,7 @@
 				$w_extend: 60px;
 
 				margin-top: calc((#{$k} * (100% + $w_extend) - (100% + $w_extend) / 1.6) / 3);
-				margin-bottom: calc((#{$k} * (100% + $w_extend) - (100% + $w_extend) / 1.6) / 3);
+				margin-bottom: 20px;
 
 				padding-left: unset;
 				margin-left: -($w_extend/2);
