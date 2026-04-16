@@ -104,14 +104,14 @@
 					</div> -->
 					<p>
 						Working with Dr. Steve McGuire at UCSC's HARE Lab and Dr. Leilani Gilpin at
-						the AIEA Lab, our goal is to develop a robust, unified MTRL controller
-						capable of smoothly switching between multiple behaviors using Nvidia's
-						IsaacSim and IsaacLab.
+						the AIEA Lab, our goal is to develop a robust RL-based controller capable of
+                        smoothly switching between multiple behaviors for quadrupedal robots,
+                        while keeping the training process parallelizable and efficient.
 					</p>
 					<p>
-						Using ROS2 and Gazebo, we aim to validate our controller on a physical
-						Unitree B1 quadruped and demonstrate real-world robustness through
-						sim-to-real transfer.
+                        Our main training and experimentation platform is Nvidia's IsaacLab. And
+                        through ROS2 and Gazebo, we aim to validate our controller on a physical
+						Unitree B1 quadruped and demonstrate real-world robustness.
 					</p>
 				</ProjectTextCard>
 				<ProjectTextCard
@@ -135,8 +135,9 @@
 					title="This Website"
 				>
 					<p>
-						Built with SvelteKit, all the contents and animations that you see are
-						hand-crafted by yours truly with SCSS or Procreate :)
+						I built this website with SvelteKit and styled it with lots of SCSS.
+                        All the animations and art that you see are also hand-crafted by yours
+                        truly on Procreate :)
 					</p>
 					<p>No AI was used in any part of this website.</p>
 				</ProjectTextCard>
