@@ -7,7 +7,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lemonfoxmere.com/">
     <meta property="og:title" content="Lemon Foxmere">
-    <meta property="og:description" content="RL Robotics Researcher  ~  Digital Artist">
+    <meta property="og:description" content="Robotics & RL Researcher @ UCSC">
     <meta property="og:image" content="https://lemonfoxmere.com/images/raster/banner.jpg">
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:creator" content="@LemonFoxmere">
@@ -15,7 +15,7 @@
     
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Lemon Foxmere" />
-    <meta name="twitter:description" content="RL Robotics Researcher  ~  Digital Artist" />
+    <meta name="twitter:description" content="Robotics & RL Researcher @ UCSC" />
     <meta name="twitter:image" content="https://lemonfoxmere.com/images/raster/banner.jpg" />
     <meta name="twitter:site" content="@LemonFoxmere" />
     
@@ -28,6 +28,16 @@
 	<link rel="stylesheet" href="%sveltekit.assets%/stylesheets/guideline.css">
 	<link rel="stylesheet" href="%sveltekit.assets%/stylesheets/global.css">
 	<link rel="stylesheet" href="%sveltekit.assets%/stylesheets/fonts.css">
+
+	<!-- detect non-safari mobile browsers -->
+	<script>
+		(function () {
+			let ua = navigator.userAgent;
+			let ios = /iPhone|iPod/.test(ua);
+			let safari = /Version\/[\d.]+.*Safari\//.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS|GSA\//.test(ua);
+			if (ios && !safari) document.documentElement.classList.add("ios-non-safari");
+		})();
+	</script>
 
 	%sveltekit.head%
 </head>

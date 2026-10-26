@@ -4,6 +4,7 @@
 	import Linkedin from "$lib/comp/Linkedin.svelte";
 	import Separator from "$lib/comp/Separator.svelte";
 	import Lemon from "../Lemon.svelte";
+	import { page } from "$app/state";
 
 	type Props = {
 		visible: boolean;
@@ -16,9 +17,11 @@
 	// svelte-ignore state_referenced_locally
 	let on_page: boolean = $state(visible);
 
+	let from_smokescreen: boolean = !page.url.hash;
+
 	$effect(() => {
 		if (!animate) {
-			// initial load: snap to correct state instantly, no animation
+			// snap to correct state instantly, no animation
 			content_visible = visible;
 			on_page = visible;
 			return;
@@ -34,7 +37,8 @@
 			setTimeout(() => {
 				on_page = visible;
 				content_visible = true;
-			}, 850); // ~10 frames @ 12 fps
+			}, from_smokescreen ? 0 : 850); // ~10 frames @ 12 fps
+			from_smokescreen = false;
 		}
 	});
 </script>
@@ -56,19 +60,14 @@
 				<h1 class="title">
 					<span>L</span><span>e</span><span>m</span><span>o</span><span>n</span>
 				</h1>
-
 				<h1 class="title">
 					<span>F</span><span>o</span><span>x</span><span>m</span><span>e</span><span
 						>r</span
 					><span>e</span>
 				</h1>
 			</section>
-			<p id="subheading" class="phone-hidden">
-				RL Robotics Researcher &nbsp;~&nbsp; Digital Artist
-			</p>
-			<p id="subheading" class="phone-only">
-				<span style="white-space: nowrap">RL Robotics Researcher</span> &
-				<span style="white-space: nowrap">Digital Artist</span>
+			<p id="subheading">
+				Robotics & RL Researcher @ UCSC
 			</p>
 		</section>
 		<Separator visible={content_visible} />
@@ -94,7 +93,9 @@
 
 	<!-- graphics -->
 	<div id="graphics" class="no-drag">
-		<Lemon visible={content_visible} />
+		<div id="lemon-wrap">
+			<Lemon visible={content_visible} />
+		</div>
 	</div>
 </section>
 
@@ -103,22 +104,33 @@
 	@use "sass:math";
 
 	#content {
+        $content-max-width: 800px;
+
 		position: relative;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		max-width: 730px;
+        min-width: calc($mobile-width - 80px);
+		max-width: $content-max-width;
+        
+        min-height: 500px;
+        max-height: 100%;
+
+        margin-left: calc(5vw - 0.05 * $mobile-width);
+        margin-top: 2vh;
+
+        // border: 1px solid blue; 
 
 		#text {
 			display: flex;
 			flex-direction: column;
-			row-gap: 25px;
+			row-gap: 24px;
 
 			z-index: 1; // bring above graphics
 			#title {
 				#connections {
 					display: flex;
-					column-gap: 7px;
+					column-gap: 12px;
 
 					> * {
 						transition-property: opacity transform;
@@ -135,8 +147,7 @@
 				#heading {
 					// border: 1px solid red;
 					display: flex;
-					flex-wrap: wrap;
-					column-gap: 1em;
+					flex-direction: column;
 
 					span {
 						display: inline-block;
@@ -169,6 +180,11 @@
 				}
 
 				#subheading {
+                    color: $token-surface-solid-accent;
+                    font-size: 24px;
+                    font-weight: 400;
+                    line-height: 110%;
+
 					transition:
 						font-weight 500ms $out-generic,
 						opacity 400ms $out-generic,
@@ -180,7 +196,7 @@
 			#cta {
 				display: flex;
 				flex-direction: column;
-				row-gap: 10px;
+				row-gap: 12px;
 			}
 
 			#cta {
@@ -218,49 +234,101 @@
 		}
 
 		#graphics {
-			margin-top: -180px;
-			padding-left: 170px;
-			width: min(730px, 100%);
+            position: absolute;
+            container-type: size;
+            display: flex;
+            align-items: flex-end;
+
+            // border: 1px solid red;
+            
+            $left: 150px;
+            $top: 80px;
+
+			top: $top;
+			padding-left: $left;
+			width: min($content-max-width, 100%);
+            aspect-ratio: 1.6; // height follows width
+
+            // some clever tuning to dodge the subtitle
+            $dodge-activ-trig: 200px;
+            $dodge: 36px;
+            $dodge-rate: 0.8;
+            transform: translateY(calc(
+                    clamp(
+                        0px, ($mobile-width + $dodge-activ-trig) - 100vw, $dodge/$dodge-rate
+                    ) * $dodge-rate
+                ));
+
+			#lemon-wrap {
+				display: contents; // only used for the mobile layout
+			}
 		}
 
 		@media screen and (width <= $mobile-width) {
-			flex-direction: column-reverse;
-			justify-content: flex-end;
+			// border: 2px solid blue;
 
-			row-gap: 20px;
+            flex-direction: column-reverse;
+			justify-content: flex-end;
 
 			height: 100%;
 
+			// undo desktop sizing
+			min-width: unset;
+			min-height: unset;
+			max-height: unset;
+			margin-left: 0;
+			margin-top: 0;
+
 			#text {
 				position: relative;
-
 				display: flex;
 				flex-direction: column;
-				row-gap: 25px;
+				margin-bottom: auto;
+				
+                width: calc(100% - 20px - 42px);
 
-				margin-top: auto;
+                row-gap: 24px;
 
-				// border: 1px solid red;
+				// border: 1px solid magenta;
 
 				z-index: 1; // bring above graphics
 				#title {
 					#heading {
+						flex-direction: row;
+						flex-wrap: wrap;
+
 						h1 {
 							white-space: nowrap;
 						}
 					}
+                    #subheading{
+                        font-size: 18px;
+                        line-height: 110%;
+
+                        span {
+                            white-space: nowrap;
+                        }
+                    }
 				}
 
 				#cta {
-					row-gap: 20px;
-					padding-bottom: 32px;
+					row-gap: 16px;
+					padding-bottom: 12px;
+
+					@include non-mobile-safari { // needs to be bigger on chrome and stuff
+						padding-bottom: 32px;
+					}
 				}
 
 				#connections {
 					display: flex;
 					position: absolute;
-					right: 4px;
-					bottom: 12px;
+					left: calc(100% + 15px);
+					bottom: 6px;
+
+					@include non-mobile-safari { // needs to be bigger on chrome and stuff
+						bottom: 24px;
+					}
 
 					flex-direction: column;
 					row-gap: 12px;
@@ -279,18 +347,52 @@
 
 			#graphics {
 				$d: 25; // degrees
+                // diag height w.r.t. width=1
 				$k: math.sin(math.div($d * 3.1415, 180)) +
 					math.div(math.cos(math.div($d * 3.1415, 180)), 1.6);
-				$w_extend: 60px;
+				$w_extend: 150px;
+				$min-height: 250px;
+                // how much the rotated graphics overflow the top and bottom
+                --overflow-top: 50px;
+                $overflow-top: var(--overflow-top);
+                $overflow-bottom: 30px;
 
-				margin-top: calc((#{$k} * (100% + $w_extend) - (100% + $w_extend) / 1.6) / 3);
-				margin-bottom: 20px;
+                @include non-mobile-safari {
+                    $overflow-top: 20px;
+                }
+
+				// vertical overhang (how much sticks out from the parent)
+				$overhang: $k - calc(1 / 1.6);
+
+				// undo desktop absolute positioning and transforms
+				position: relative;
+				top: auto;
+				aspect-ratio: auto;
+                transform: none;
+				height: 100%;
+				min-height: $min-height;
+                max-height: 100vw * $k;
+
+				container-type: size;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
 
 				padding-left: unset;
 				margin-left: -($w_extend/2);
+                margin-top: auto;
 				width: calc(100% + $w_extend);
 
-				transform: rotate(-#{$d}deg);
+				#lemon-wrap {
+                    $w: min(100cqw, (100cqh + $overflow-bottom + $overflow-top) / $k);
+					
+                    display: block;
+					container-type: inline-size;
+                    
+                    width: $w;
+
+					transform: translateY(calc($w * #{$overhang} / 2 - $overflow-top)) rotate(-#{$d}deg);
+				}
 			}
 
 			&.hidden {
@@ -341,7 +443,7 @@
 
 							@for $i from 1 through 7 {
 								span:nth-child(#{$i}) {
-									transform: translateX(-3px * ($i + 4)) scaleX(0.8);
+									transform: translateX(-3px * ($i - 1)) scaleX(0.8);
 								}
 							}
 						}

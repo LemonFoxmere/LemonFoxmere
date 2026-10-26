@@ -13,6 +13,9 @@
 	// svelte-ignore state_referenced_locally
 	let on_page: boolean = $state(visible);
 
+	// dim the (sticky) photo once the page has scrolled a bit (mobile only, see css)
+	let dimmed: boolean = $state(false);
+
 	$effect(() => {
 		if (!animate) {
 			// initial load: snap to correct state instantly, no animation
@@ -35,6 +38,8 @@
 		}
 	});
 </script>
+
+<svelte:window onscroll={() => (dimmed = scrollY > 10)} />
 
 <section
 	id="content"
@@ -66,20 +71,14 @@
 			</section>
 			<Separator visible={content_visible} />
 			<section id="body">
-				<p>
-					Hey there, I'm Lemon! I'm a robotics researcher and student with a passion for
-					UI/UX design and visual art. Currently, I'm studying at UCSC as a Computer
-					Science undergrad while working with Dr. Steve McGuire in the Human Aware
-					Robotics Exploration (HARE) Lab.
+				<p id="par1">
+					Hey there, My name is Lemon! I'm a robotics researcher with a passion in UI/UX design and visual art. Currently, I'm studying Computer Science at UC Santa Cruz as an undergrad and working with Dr. Steve McGuire in the Human Aware Robotics Exploration (HARE) Lab.
 				</p>
-				<p>
-					My main research interest is in the field of Multi-Task Reinforcement Learning.
-					Specifically, how we can train generalized robotics controllers that are capable
-					of a multitude of behaviors while maintaining high levels of performance and
-					robustness. If this sounds interesting to you, I'd love to have a talk together!
+				<p id="par2">
+					My research interest sits at the intersection of reinforcement learning, representation learning, and continual learning. Specifically, I'm interested in how robots can efficiently learn meaningful and generalizable representations of the world around them, as well as adapt to novel environments and dynamics as they explore the real world. If this sounds interesting to you, I'd love to chat!
 				</p>
-				<p>
-					When I'm not playing with robots, I like to cook and draw funny animal people.
+				<p id="par3">
+					When I'm not playing with robots, I like to travel and draw funny animal people.
 				</p>
 			</section>
 		</section>
@@ -87,8 +86,11 @@
 
 	<!-- graphics -->
 	<div id="graphics" class="no-drag">
-		<img src="/images/raster/lemon_photo.png" alt="" />
+		<img class:dimmed src="/images/raster/lemon_photo.png" alt="" />
 	</div>
+
+    <!-- top and bottom gradients -->
+    <div id="bottom-gradient"></div>
 </section>
 
 <style lang="scss">
@@ -102,7 +104,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		row-gap: 10px;
+		row-gap: 12px;
 
 		width: min(650px + 300px, 100%);
 
@@ -110,7 +112,7 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			row-gap: 10px;
+			row-gap: 12px;
 
 			#nav {
 				z-index: 1;
@@ -121,8 +123,9 @@
 			#text {
 				display: flex;
 				flex-direction: column;
-				row-gap: 20px;
+				row-gap: 24px;
 				width: 100%;
+                min-width: $mobile-width + 40px;
 				padding-right: 35%;
 
 				// border: 1px solid blue;
@@ -216,7 +219,14 @@
 								transition-delay: 100ms * ($i - 1) + 600ms;
 							}
 						}
+
 					}
+                    #par1{
+                        padding-right: 150px;
+                    }
+                    #par2{
+                        padding-right: 75px;
+                    }
 				}
 			}
 		}
@@ -224,31 +234,72 @@
 		#graphics {
 			position: absolute;
 			right: 0;
-			width: min(650px, 70%);
+			width: 650px;
 
 			transform-origin: 80% 20%;
+
+            border-top-right-radius: 62px;
+            overflow: hidden;
 
 			// border: 1px solid red;
 
 			transition:
-				opacity 600ms $out-generic,
-				transform 700ms $out-generic;
+                opacity 600ms $out-generic,
+                transform 700ms $out-generic;
 			transition-delay: 700ms;
 
 			img {
 				width: 100%;
+                transition:
+                        opacity 1000ms $out-generic-expo,
+                        filter 1000ms $out-generic-expo;
 			}
 		}
+
+        #bottom-gradient {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+
+            pointer-events: none;
+
+            width: 100%;
+            height: 50px;
+            transform: rotate(180deg);
+
+            // log scale to look more natural
+            background: linear-gradient(
+                #fcefe8ff 0%,
+                #fcefe8e6 15%,
+                #fcefe8bf 30%,
+                #fcefe88c 45%,
+                #fcefe859 60%,
+                #fcefe82e 73%,
+                #fcefe812 85%,
+                #fcefe800 100%
+            );
+        }
+
+        @media screen and ($mobile-width < width <= 900px) { // this page specific
+            #graphics {
+                img{
+                    opacity: 0.5;
+                }
+            }
+        }
 
 		@media screen and (width <= $mobile-width) {
 			flex-direction: column-reverse;
 			justify-content: flex-end;
+            margin-bottom: auto; // align to top
 
 			#text-content {
-				display: flex;
+                display: flex;
 				flex-direction: column;
-				justify-content: center;
+                justify-content: center;
 				row-gap: 10px;
+                margin-top: -180px;
 
 				#nav {
 					z-index: 1;
@@ -257,44 +308,65 @@
 				}
 
 				#text {
+					min-width: unset; // undo desktop min-width
 					padding-right: 0;
-					padding-bottom: 100px;
+					padding-bottom: 50px;
+                    @include non-mobile-safari {
+                        padding-bottom: 75px;
+                    }
 
 					#heading {
 						h1 {
 							white-space: wrap;
 						}
 					}
+                    #body{
+                        #par1, #par2{
+                            padding-right: 0px;
+                        }
+                    }
 				}
 			}
 
 			#graphics {
-				$w_extend: 200px;
+				$w_extend: 300px;
 
-				position: relative;
+				position: sticky;
+				top: 0;
 				width: calc(100% + $w_extend);
 
 				margin-left: -$w_extend + 30px;
-
-				transform-origin: calc(50% + $w_extend/2), 50%;
-
-				transition:
-					opacity 600ms $out-generic,
-					transform 700ms $out-generic,
-					filter 700ms $out-generic;
+                
+                transition:
+                    opacity 600ms $out-generic,
+                    transform 700ms $out-generic,
+                    filter 700ms $out-generic,
+                    border-radius 800ms $out-generic;
 				transition-delay: 0ms;
-
+                
+				@include non-mobile-safari {
+                    transform-origin: calc(50% + $w_extend / 2) 50%;
+                    border-top-right-radius: 0;
+				}
+                
 				img {
-					width: 100%;
+                    width: 100%;
+                    
+					&.dimmed {
+						opacity: 0.15;
+                        filter: saturate(1.25);
+					}
 				}
 			}
 
-			&.hidden {
-				#graphics {
-					transform: scale(1.1) !important;
-					filter: blur(5px) brightness(1.5);
-				}
-			}
+            @include non-mobile-safari {
+                &.hidden {
+                    #graphics {
+                        transform: scale(1.1) !important;
+                        filter: blur(5px) brightness(1.5);
+                    }
+                }
+            }
 		}
 
 		&.hidden {

@@ -53,6 +53,16 @@ $in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
 $mobile-width: 600px;
 $tablet-width: 1190px;
 
+// mobile browsers without safari's nice search bar
+@mixin non-mobile-safari {
+    @supports not (-webkit-touch-callout: none) {
+        @content;
+    }
+    :global(:where(html.ios-non-safari)) & {
+        @content;
+    }
+}
+
 // RESPONSIVE DESIGN
 .phone-only {
     @media screen and (min-width: $mobile-width) {

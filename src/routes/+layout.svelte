@@ -20,7 +20,7 @@
 
 {@render children()}
 
-<div id="noise-bg"></div>
+<!-- <div id="noise-bg"></div> -->
 
 <style lang="scss">
 	@use "$static/stylesheets/guideline" as *;

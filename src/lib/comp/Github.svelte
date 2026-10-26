@@ -14,7 +14,7 @@
 		border-radius: 100%;
 
 		div {
-			width: 28px;
+			width: 32px;
 			height: auto;
 			aspect-ratio: 1/1;
 			background-color: $token-text-secondary;
@@ -25,23 +25,24 @@
 			mask-size: 100% 100%;
 
 			cursor: pointer;
-			transition: scale 300ms $out-cubic;
+			transition: 400ms $out-cubic;
+            transition-property: scale, background-color;
 
 			@media screen and (width <= $mobile-width) {
-				width: 48px;
+				width: 42px;
 			}
 
 			&:hover {
 				@media (hover: hover) {
+                    transition: 100ms $out-cubic;
 					background-color: $token-surface-solid-accent;
-					// -webkit-mask-image: url(/icons/github/2.png);
-					// mask-image: url(/icons/github/2.png);
 				}
 			}
 
 			&:active {
+                transition: 200ms $out-cubic;
 				background-color: $token-surface-solid-accent;
-				opacity: 0.7;
+                scale: 1.4;
 			}
 		}
 	}

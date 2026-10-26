@@ -41,9 +41,12 @@
 	$f: var(--frame);
 
 	div {
-		width: 100%;
-		height: auto;
-		aspect-ratio: 2800 / 1750;
+        // border: 1px solid green;
+
+        margin-left: auto;
+        width: min(100cqw, 100cqh * 1.6);
+        height: auto;
+        aspect-ratio: 2800 / 1750;
 
 		background-image: url(/animation/lemon_light.png);
 		background-size: 100% auto;

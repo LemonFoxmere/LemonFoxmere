@@ -11,10 +11,11 @@
 
 	let hash = $derived(page.url.hash.slice(1, page.url.hash.length));
 	let animate = $state(false);
+	// landing waits for the smokescreen so it animates in from scratch; other pages are already there
+	let smokescreen_done = $state(false);
 
 	onMount(() => {
-		// Wait two frames so the initial hash has been read and state has settled
-		// before enabling transition animations.
+		// wait two frames so the initial hash has been read and state has settled before enabling transition animations.
 		requestAnimationFrame(() => {
 			requestAnimationFrame(() => {
 				animate = true;
@@ -23,10 +24,10 @@
 	});
 </script>
 
-<Loading visible={!animate} />
+<Loading visible={!animate} ondone={() => (smokescreen_done = true)} />
 
 <main>
-	<Landing visible={!hash} {animate} />
+	<Landing visible={!hash && smokescreen_done} {animate} />
 	<About visible={hash === "about"} {animate} />
 	<Projects visible={hash === "projects"} {animate} />
 </main>

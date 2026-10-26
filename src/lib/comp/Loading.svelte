@@ -3,12 +3,14 @@
 
 	type Props = {
 		visible: boolean;
+		ondone?: () => void; // called when the smokescreen starts fading away
 	};
-	let { visible }: Props = $props();
+	let { visible, ondone }: Props = $props();
 
 	let frame = $state(0);
+    let smokeScreenVisible = $state(true);
 
-	let animate: NodeJS.Timer;
+	let animate: string | number | NodeJS.Timeout | undefined;
 
 	onMount(() => {
 		animate = setInterval(() => {
@@ -20,10 +22,29 @@
 			frame++;
 		}, 1000 / 13);
 	});
+
+    $effect(() => {
+        if (visible) {
+            setTimeout(() => {
+                clearInterval(animate);
+                animate = setInterval(() => {
+                    if (frame <= 0) {
+                        // total 7 frames
+                        clearInterval(animate);
+                        smokeScreenVisible = false;
+                        ondone?.();
+                        return;
+                    }
+                    frame--;
+                }, 1000 / 13);
+            }, 1000);
+        }
+    })
+
 </script>
 
-<main id="loading" class={!visible ? "hidden" : ""}>
-	<div id="fox" style="--frame: {frame}" class={!visible ? "hidden" : ""}></div>
+<main id="loading" class={!smokeScreenVisible ? "hidden" : ""}>
+	<div id="fox" style="--frame: {frame}" class={!smokeScreenVisible ? "hidden" : ""}></div>
 </main>
 
 <style lang="scss">
@@ -37,12 +58,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-
+        
 		background-color: $token-surface-solid-primary;
 
 		opacity: 1;
 		transition: opacity 700ms $out-generic;
-		transition-delay: 1000ms;
+		transition-delay: 200ms;
 		pointer-events: all;
 
 		#fox {
@@ -61,7 +82,6 @@
 			transition:
 				opacity 400ms $out-generic,
 				transform 400ms $in-cubic;
-			transition-delay: 800ms;
 
 			&.hidden {
 				opacity: 0;
