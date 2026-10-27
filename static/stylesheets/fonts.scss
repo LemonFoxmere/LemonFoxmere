@@ -49,6 +49,7 @@ h1{
 h2{
     font-family: "Rock Salt";
     font-size: 28px;
+    font-weight: 400;
     line-height: 150%;
 
     color: $token-text-primary;
@@ -76,4 +77,20 @@ a{
     line-height: 150%;
     text-decoration: underline;
     cursor: pointer;
+
+    &:not(.wrapper){
+        transition: scale 600ms $out-generic-expo;
+
+        &:active {
+            transition: scale 400ms $out-generic-expo;
+            scale: 1.4;
+        }
+    }
+
+    &.connections{
+        font-family: "panchang";
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 100%;
+    }
 }

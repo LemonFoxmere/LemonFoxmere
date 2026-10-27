@@ -7,6 +7,7 @@
 
 	function navigate(delta: number) {
 		current_idx = (((current_idx + delta) % num_elements) + num_elements) % num_elements;
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	}
 </script>
 
@@ -25,7 +26,7 @@
 
 	#cta {
 		display: flex;
-		column-gap: 50px;
+		column-gap: 32px;
 
 		button {
 			display: inline-flex;
@@ -36,7 +37,7 @@
 			border-radius: 100px;
 
 			cursor: pointer;
-			transition: scale 500ms $out-cubic;
+			transition: scale 600ms $out-generic-expo;
 
 			div {
 				width: 24px;
@@ -51,7 +52,8 @@
 			}
 
 			&:active {
-				opacity: 0.75;
+				transition: scale 400ms $out-generic-expo;
+				scale: 1.6;
 			}
 
 			&#right {
@@ -59,4 +61,18 @@
 			}
 		}
 	}
+
+    @media screen and (width <= $mobile-width) { 
+        #cta{
+            column-gap: 16vw;
+
+            button{
+                width: 42px;
+                height: 42px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
 </style>

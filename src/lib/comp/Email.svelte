@@ -1,7 +1,6 @@
 <script lang="ts">
-	const e = atob("bGVtb25mb3htZXJlQHVjc2MuZWR1");
-	function openEmail() {
-		window.location.href = `mailto:${e}`;
+	let openEmail = () => {
+		window.location.href = `mailto:${atob("bGVtb25AbGVtb25mb3htZXJlLmNvbQ==")}`;
 	}
 </script>
 

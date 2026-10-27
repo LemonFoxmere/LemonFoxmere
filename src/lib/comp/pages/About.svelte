@@ -125,7 +125,7 @@
 				flex-direction: column;
 				row-gap: 24px;
 				width: 100%;
-                min-width: $mobile-width + 40px;
+                min-width: $mobile-width - 40px;
 				padding-right: 35%;
 
 				// border: 1px solid blue;
@@ -234,7 +234,7 @@
 		#graphics {
 			position: absolute;
 			right: 0;
-			width: 650px;
+			width: min(650px, 100% + 50px);
 
 			transform-origin: 80% 20%;
 
@@ -340,8 +340,7 @@
                 transition:
                     opacity 600ms $out-generic,
                     transform 700ms $out-generic,
-                    filter 700ms $out-generic,
-                    border-radius 800ms $out-generic;
+                    filter 700ms $out-generic;
 				transition-delay: 0ms;
                 
 				@include non-mobile-safari {
@@ -353,7 +352,7 @@
                     width: 100%;
                     
 					&.dimmed {
-						opacity: 0.15;
+						opacity: 0;
                         filter: saturate(1.25);
 					}
 				}
