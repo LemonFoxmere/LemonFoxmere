@@ -61,17 +61,29 @@
 		}
 	}
 
+	$gradient-solid-height: 50px;
+
 	#top-gradient,
 	#bottom-gradient {
 		position: fixed;
-		top: 0;
+		top: $gradient-solid-height; // gradient sits below the solid part
 		left: 0;
 		z-index: 1;
 
 		pointer-events: none;
 
 		width: 100%;
-		height: 150px;
+		height: 100px;
+
+		&::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 100%;
+			height: $gradient-solid-height;
+			background-color: $token-surface-solid-primary;
+		}
 
 		// log scale to look more natural
 		background: linear-gradient(
@@ -87,7 +99,7 @@
 	}
 	#bottom-gradient {
 		top: unset;
-		bottom: 0;
+		bottom: $gradient-solid-height;
 		transform: rotate(180deg);
 	}
 </style>

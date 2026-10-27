@@ -205,29 +205,30 @@
 					font-style: italic;
 
 					transition:
-						color 0ms,
+						color 400ms $out-generic,
+						scale 600ms $out-generic-expo,
 						opacity 500ms $out-generic,
 						transform 500ms $out-generic;
 
 					&:hover {
 						@media (hover: hover) {
+                            transition-duration: 100ms, 400ms, 500ms, 500ms;
 							color: $token-surface-solid-accent;
 						}
 					}
 
 					&:active {
+						transition-duration: 200ms, 200ms, 500ms, 500ms;
 						color: $token-surface-solid-accent;
 						opacity: 0.7;
+						scale: 1.15;
 					}
 				}
 
 				@for $i from 1 through 3 {
 					$delay: 500ms + 100ms * ($i - 1);
 					> *:nth-child(#{$i}) {
-						transition:
-							color 0ms,
-							opacity 500ms $out-generic $delay,
-							transform 500ms $out-generic $delay;
+						transition-delay: 0ms, 0ms, $delay, $delay;
 					}
 				}
 			}

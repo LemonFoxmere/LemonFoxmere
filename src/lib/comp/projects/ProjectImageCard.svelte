@@ -63,8 +63,6 @@
 			width: 100%;
 			height: 100%;
 
-			opacity: 0.9;
-
 			border-radius: 50px 55px 55px 50px;
 
 			mask-image: linear-gradient(90deg, rgb(0, 0, 0) $blur-begin, transparent $blur-end);
@@ -85,12 +83,14 @@
 			opacity: 1;
 			border-radius: 50px 55px 55px 50px;
 
-			filter: blur(50px);
+			filter: blur(5px);
 			mask-image: linear-gradient(90deg, transparent $blur-begin, rgb(0, 0, 0) $blur-end);
 			-webkit-mask-image: linear-gradient(
 				90deg,
 				transparent $blur-begin rgb(0, 0, 0) $blur-end
 			);
+
+            transition: filter 600ms $out-generic;
 		}
 
 		.gradient-filter {
@@ -98,6 +98,8 @@
 			inset: 0;
 			width: 100%;
 			height: 100%;
+
+            transition: opacity 600ms $out-generic;
 
 			&#white {
 				background: linear-gradient(
@@ -117,11 +119,7 @@
 				background: linear-gradient(
 					270deg,
 					$token-surface-solid-accent 0%,
-					mix($token-surface-solid-primary, $token-surface-solid-accent, 18%) 22%,
-					mix($token-surface-solid-primary, $token-surface-solid-accent, 42%) 40%,
-					mix($token-surface-solid-primary, $token-surface-solid-accent, 64%) 58%,
-					mix($token-surface-solid-primary, $token-surface-solid-accent, 84%) 76%,
-					$token-surface-solid-primary 100%
+					transparent 100%
 				);
 			}
 
@@ -156,7 +154,7 @@
 
 		&.dark {
 			img {
-				opacity: 0.9;
+				opacity: 0.6;
 			}
 
 			.gradient-filter {
@@ -192,18 +190,35 @@
 						transparent 70%
 					);
 				}
-				&#orange {
-					opacity: 0.2;
-					mix-blend-mode: overlay;
-				}
+                &#orange{
+                    background: none;
+                }
 			}
 		}
+
+        @media screen and ($mobile-width < width <= calc($mobile-width + 120px)) {
+            .gradient-filter {
+                transition: opacity 400ms $out-generic;
+
+                &#white {
+                    opacity: 0;
+                }
+                &#orange {
+                    opacity: 0;
+                }
+            }
+
+            .blur-overlay {
+                transition: filter 400ms $out-generic;
+                filter: blur(0px);
+            }
+        }
 
 		@media screen and (width <= $mobile-width) {
 			border-radius: 0px 0px 100px 0px;
 
-			$blur-begin: 45%;
-			$blur-end: 70%;
+			$blur-begin: 80%;
+			$blur-end: 100%;
 
 			img {
 				border-radius: 0px 0px 100px 0px;
@@ -223,7 +238,7 @@
 			.blur-overlay {
 				border-radius: 0px 0px 100px 0px;
 
-				filter: blur(20px);
+				filter: blur(10px);
 
 				mask-image: linear-gradient(
 					0deg,
@@ -256,14 +271,12 @@
 				}
 				&#orange {
 					height: 100%;
+                    opacity: 0.3;
+                    mix-blend-mode: normal;
 					background: linear-gradient(
 						0deg,
 						$token-surface-solid-accent 0%,
-						mix($token-surface-solid-primary, $token-surface-solid-accent, 18%) 22%,
-						mix($token-surface-solid-primary, $token-surface-solid-accent, 42%) 40%,
-						mix($token-surface-solid-primary, $token-surface-solid-accent, 64%) 58%,
-						mix($token-surface-solid-primary, $token-surface-solid-accent, 84%) 76%,
-						$token-surface-solid-primary 100%
+						transparent 20%
 					);
 				}
 			}
@@ -333,10 +346,6 @@
 								68%,
 							transparent 70%
 						);
-					}
-					&#orange {
-						opacity: 0.2;
-						mix-blend-mode: overlay;
 					}
 				}
 			}

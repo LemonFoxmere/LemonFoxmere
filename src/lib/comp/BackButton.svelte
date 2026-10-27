@@ -46,6 +46,8 @@
 		font: inherit;
 		color: inherit;
 
+		transition: scale 400ms $out-generic;
+
 		p {
 			color: $token-surface-solid-accent;
 			font-weight: 600;
@@ -62,6 +64,11 @@
 			mask-mode: luminance;
 			mask-repeat: no-repeat;
 			mask-size: 100% 100%;
+		}
+
+		&:active {
+			transition-duration: 200ms;
+			scale: 1.15;
 		}
 	}
 </style>

@@ -40,7 +40,10 @@
 	});
 
 	function noTouchScroll(node: HTMLElement) {
-		const prevent = (e: TouchEvent) => e.preventDefault();
+		const prevent = (e: TouchEvent) => {
+			// the page scrolls on mobile
+			if (!matchMedia("(width <= 600px)").matches) e.preventDefault();
+		};
 		node.addEventListener("touchmove", prevent, { passive: false });
 		return { destroy: () => node.removeEventListener("touchmove", prevent) };
 	}
@@ -48,15 +51,10 @@
 	const num_projects = 4;
 	let current_project_idx = $state(0);
 
-	let card_ref_0: any = null;
-	let card_ref_1: any = null;
-	let card_ref_2: any = null;
-	let card_ref_3: any = null;
-
-	function openActiveModal() {
-		[card_ref_0, card_ref_1, card_ref_2, card_ref_3][current_project_idx]?.openModal?.();
-	}
+	let masked: boolean = $state(false);
 </script>
+
+<svelte:window onscroll={() => (masked = scrollY > 1)} />
 
 <main
 	use:noTouchScroll
@@ -65,7 +63,9 @@
 		: ''}"
 >
 	<section id="content">
-		<section id="title">
+		<section id="title" class:masked>
+			<div id="top-gradient" class="phone-only"></div>
+
 			<div id="nav">
 				<BackButton />
 			</div>
@@ -73,7 +73,7 @@
 				<section id="heading">
 					<h1>
 						<span>A</span><span>c</span><span>t</span>
-						<span>0</span><span>2</span><span class="phone-hidden">:</span>
+						<span>0</span><span>2</span><span>:</span>
 					</h1>
 					<h1 class="thin">
 						<span>P</span><span>r</span><span>o</span><span>j</span><span>e</span><span
@@ -84,38 +84,50 @@
 				<div class="phone-hidden">
 					<Separator visible={content_visible} />
 				</div>
-				<div class="phone-only">
-					<Separator visible={content_visible} clr="secondary" />
-				</div>
 			</section>
+
+            <!-- only shows up on overflow scroll -->
+            <div id="overflow-carousel-indicator" class="phone-only">
+                <CarouselIndicator
+                    num_elements={num_projects}
+                    bind:current_idx={current_project_idx}
+                    scheme="invert"
+                />
+            </div>
 		</section>
 
 		<section id="body">
 			<div id="projects">
 				<ProjectTextCard
-					bind:this={card_ref_0}
 					visible={current_project_idx === 0 && content_visible}
 					title="RoboDog Project"
 				>
-					<!-- <div class="project-links">
-						<a href="https://github.com/harelab-ucsc/b1_rl_locomotion" target="_blank"
-							>Github</a
+					<div class="project-links">
+						<a href="https://www.youtube.com/watch?v=V9yX04EBcFA" class="connections" target="_blank"
+							>YOUTUBE</a
 						>
-					</div> -->
+                        <div></div>
+						<a href="https://arxiv.org/abs/2610.10601" class="connections" target="_blank"
+							>ARXIV</a
+						>
+					</div>
+
 					<p>
-						Working with Dr. Steve McGuire at UCSC's HARE Lab and Dr. Leilani Gilpin at
-						the AIEA Lab, our goal is to develop a robust RL-based controller capable of
-                        smoothly switching between multiple behaviors for quadrupedal robots,
-                        while keeping the training process parallelizable and efficient.
+						Working with Dr. Steve McGuire and Dr. Leilani Gilpin, I led the
+                        development of a multi-task reinforcement learning method that
+                        trains a single end-to-end policy to perform multiple distinct
+                        tasks. The policy is capable of learning diverse skills such as
+                        walking, digging, and hopping, smoothly switching between them,
+                        and composing them to produce novel behaviors such as crawling.
 					</p>
 					<p>
-                        Our main training and experimentation platform is Nvidia's IsaacLab. And
-                        through ROS2 and Gazebo, we aim to validate our controller on a physical
-						Unitree B1 quadruped and demonstrate real-world robustness.
+                        To demonstrate real-world performance, we deployed this method on
+                        a Unitree B1 quadruped, where it traversed through slopes and bumpy
+                        terrain, crawled under obstacles, and lifted its leg to press
+                        buttons.
 					</p>
 				</ProjectTextCard>
 				<ProjectTextCard
-					bind:this={card_ref_1}
 					visible={current_project_idx === 1 && content_visible}
 					title="Autonomous Drone Racing"
 				>
@@ -125,33 +137,36 @@
 						Autonomous Vehicles (based on MIT 16.485).
 					</p>
 					<p>
-						We finished the obstacle course in 8.5 seconds — 1.8 seconds faster than
+						We finished the obstacle course in 8.5 seconds: 1.8 seconds faster than
 						MIT's record of 10.3s as of March 2026
 					</p>
 				</ProjectTextCard>
 				<ProjectTextCard
-					bind:this={card_ref_2}
 					visible={current_project_idx === 2 && content_visible}
 					title="This Website"
 				>
+                    <div class="project-links">
+                        <a href="https://github.com/LemonFoxmere/LemonFoxmere" class="connections" target="_blank"
+                            >GITHUB</a
+                        >
+                    </div>
 					<p>
 						I built this website with SvelteKit and styled it with lots of SCSS.
                         All the animations and art that you see are also hand-crafted by yours
                         truly on Procreate :)
 					</p>
-					<p>No AI was used in any part of this website.</p>
 				</ProjectTextCard>
 				<ProjectTextCard
-					bind:this={card_ref_3}
 					visible={current_project_idx === 3 && content_visible}
 					title="DeepFusion"
 				>
-					<!-- <div class="project-links">
-						<a href="https://github.com/LemonFoxmere/DeepFusion" target="_blank"
-							>Github</a
+					<div class="project-links">
+						<a href="https://github.com/LemonFoxmere/DeepFusion" class="connections" target="_blank"
+							>GITHUB</a
 						>
-						<a href="https://lemonfoxmere.github.io/DeepFusion/" target="_blank">App</a>
-					</div> -->
+                        <div></div>
+						<a href="https://lemonfoxmere.github.io/DeepFusion/" class="connections" target="_blank">APP</a>
+					</div>
 					<p>
 						A WYSIWYG graphical neural network maker. It lets you to create and train
 						simple neural networks on custom datasets without any code, which can then
@@ -166,18 +181,10 @@
 				</ProjectTextCard>
 			</div>
 
+			<!-- dock stays still so the fade doesn't animate with the controls -->
+			<div id="controls-dock">
+			<div class="fade phone-only"></div>
 			<section id="controls">
-				<!-- phone readmore -->
-				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<!-- svelte-ignore a11y_no_static_element_interactions -->
-				<a
-					id="read-more"
-					class="phone-only"
-					onclick={(e) => {
-						e.preventDefault();
-						openActiveModal();
-					}}>Read More</a
-				>
 				<CarouselController
 					num_elements={num_projects}
 					bind:current_idx={current_project_idx}
@@ -191,6 +198,7 @@
 					/>
 				</div>
 			</section>
+			</div>
 		</section>
 	</section>
 
@@ -225,6 +233,9 @@
 				scheme={["invert", "primary", "invert", "primary"][current_project_idx]}
 			/>
 		</div>
+
+        <!-- faster to animate than trying to mess with the project photo opacity -->
+		<div id="mask" class="phone-only" class:masked></div>
 	</div>
 </main>
 
@@ -249,7 +260,7 @@
 
 			z-index: 1;
 
-			width: min(450px + 100px, 100%);
+			width: min(500px + 100px, 100%);
 			height: calc(100% + 100px);
 			padding-bottom: 150px;
 			min-height: fit-content;
@@ -257,7 +268,7 @@
 			#title {
 				display: flex;
 				flex-direction: column;
-				row-gap: 10px;
+				row-gap: 12px;
 
 				width: 100%;
 
@@ -270,7 +281,7 @@
 				#text {
 					display: flex;
 					flex-direction: column;
-					row-gap: 20px;
+					row-gap: 24px;
 					width: 100%;
 
 					// padding-right: 25%;
@@ -327,8 +338,8 @@
 
 				display: flex;
 				flex-direction: column;
-				row-gap: 40px;
-				margin-top: 20px;
+				row-gap: 32px;
+				margin-top: 24px;
 
 				#controls {
 					display: flex;
@@ -341,45 +352,30 @@
 						transform 700ms $out-generic;
 
 					transition-delay: 700ms;
-
-					#read-more {
-						font-weight: 600;
-						color: $token-surface-solid-accent;
-						text-decoration: underline;
-						cursor: pointer;
-
-						&:active {
-							opacity: 0.7;
-						}
-					}
 				}
 
 				#projects {
-					.project-links {
+                    .project-links {
+                        margin-bottom: 12px;
 						display: flex;
-						column-gap: 0.5rem;
+                        align-items: center;
+						column-gap: 12px;
 
-						a {
-							color: $token-text-invert;
-							text-decoration: none;
-							background-color: $token-surface-solid-invert;
+                        a{
+                            transition: scale 600ms $out-generic-expo;
+                            &:active {
+                                transition: scale 400ms $out-generic-expo;
+                                scale: 1.2;
+                            }
+                        }
 
-							font-size: 14px;
-							padding: 2px 12px;
-							border-radius: 50px;
-							margin: 0px;
-
-							-webkit-user-drag: none;
-							-moz-user-select: none;
-							user-select: none;
-							-webkit-user-select: none;
-							-ms-user-select: none;
-
-							&:active {
-								transition: none;
-								opacity: 0.75;
-							}
-						}
+                        div {
+                            width: 4px;
+                            height: 4px;
+                            background-color: $token-surface-solid-accent;
+                            border-radius: 4px;
+                            pointer-events: none;
+                        }
 					}
 				}
 			}
@@ -398,72 +394,196 @@
 			height: calc(100% - 200px);
 			transform: translateY(-50%);
 
+            min-width: $mobile-width - 100px;
+
 			pointer-events: none;
 
 			transition:
 				opacity 600ms $out-generic,
+				filter 700ms $out-generic,
 				transform 700ms $out-generic;
 		}
 
+        @media screen and ($mobile-width < width <= calc($mobile-width * 2)) {
+            #graphics {
+                opacity: 0.3;
+            }
+        }
+
 		@media screen and (width <= $mobile-width) {
-			$text-content-gap: 250px;
+			// svh so the layout doesn't jump when the browser bars hide
+			$graphics-height: min(max(100vw, 300px), 100svh - 200px);
+			$content-padding-top: 24px;
+
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			align-self: flex-start;
+			height: auto;
+			min-height: 100%;
 
 			#content {
-				padding: 0;
-				padding-top: 20px;
+
+                padding: 0;
+				padding-top: $graphics-height;
 
 				width: calc(100% + 20px);
 				margin-left: -10px;
-				height: 100%;
+				height: auto;
+				flex: 1;
+				z-index: 2;
 
 				#title {
-					z-index: 1;
-					#text {
-						align-items: center;
-						#heading {
-							justify-content: center;
+					position: fixed;
+					top: $content-padding-top;
+                    left: 0px;
+                    padding: 0px 24px;
+					z-index: 2;
 
-							h1:nth-child(2) {
-								@for $i from 1 through 8 {
-									span:nth-child(#{$i}) {
-										transition-delay: 20ms * ((8-$i) + 5);
-									}
-								}
-							}
-						}
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+
+					#text {
+                        width: fit-content;
+                        align-items: center;
+
+                        #heading{
+                            column-gap: 0.5rem;
+
+                            h1{
+                                font-size: 18px;
+                            }
+                        }
 					}
+
+                    #overflow-carousel-indicator{
+                        position: absolute;
+                        right: 24px;
+                        bottom: -100%;
+
+                        transform: translateY(-10px);
+
+                        opacity: 0;
+                        pointer-events: none;
+                        transition:
+                            opacity 300ms $out-generic,
+                            transform 300ms $out-generic;
+                    }
+
+                    #top-gradient {
+                        position: absolute;
+                        top: -$content-padding-top;
+                        left: 0;
+                        right: 0;
+                        height: 140px;
+                        z-index: -1;
+                        pointer-events: none;
+
+                        background: linear-gradient(
+                            to bottom,
+                            rgba($token-surface-solid-primary, 1) 0%,
+                            rgba($token-surface-solid-primary, 1) 45%,
+                            rgba($token-surface-solid-primary, 0.91) 55%,
+                            rgba($token-surface-solid-primary, 0.81) 65%,
+                            rgba($token-surface-solid-primary, 0.66) 75%,
+                            rgba($token-surface-solid-primary, 0.45) 85%,
+                            rgba($token-surface-solid-primary, 0) 100%
+                        );
+
+                        opacity: 0;
+                        transition: opacity 300ms $out-generic;
+                    }
+
+                    &.masked {
+                        #overflow-carousel-indicator {
+                            opacity: 1;
+                            transition-delay: 300ms;
+                            transform: translateY(0px);
+                            pointer-events: auto;
+                        }
+                        #top-gradient {
+                            opacity: 1;
+                        }
+                    }
 				}
 				#body {
-					height: $text-content-gap;
-					max-height: $text-content-gap;
+					flex: 1;
 					margin-top: 0px;
 
 					row-gap: 10px;
 					justify-content: space-between;
 
-					padding: 20px 0px;
-
-					#controls {
-						padding: 0px 20px 10px 10px;
-					}
+					padding-top: 20px;
 
 					#projects {
-						flex: 1;
-						min-height: 0;
+						padding-bottom: 100px;
+					}
+
+					#controls-dock {
+						position: sticky;
+						bottom: 0;
+
+						#controls {
+							position: relative; // paint above the fade
+							padding: 0px 20px 6px 12px;
+                            
+                            justify-content: center;
+                            
+                            // need more space on normal browsers
+                            @include non-mobile-safari {
+                                padding: 0px 20px 24px 12px;
+                            }
+						}
+
+						.fade {
+							$solid-height: 30px;
+
+							position: absolute;
+							left: 0;
+							right: 0;
+							bottom: $solid-height; // gradient sits on top of the solid part
+							height: 100px;
+							pointer-events: none;
+
+							&::after {
+								content: "";
+								position: absolute;
+								left: 0;
+								right: 0;
+								top: 100%;
+								height: $solid-height;
+								background-color: $token-surface-solid-primary;
+							}
+
+							background: linear-gradient(
+								to bottom,
+								rgba($token-surface-solid-primary, 0) 0%,
+								rgba($token-surface-solid-primary, 0) 10%,
+								rgba($token-surface-solid-primary, 0.45) 30%,
+								rgba($token-surface-solid-primary, 0.66) 60%,
+								rgba($token-surface-solid-primary, 0.81) 80%,
+								rgba($token-surface-solid-primary, 0.91) 90%,
+								rgba($token-surface-solid-primary, 1) 100%
+							);
+						}
 					}
 				}
 			}
 
 			#graphics {
+				// stays put while the text scrolls under it
 				top: 0px;
 				left: 0px;
+				z-index: 1;
 
 				display: flex;
 				justify-content: center;
 				align-items: center;
 
 				width: 100%;
-				height: calc(100% - $text-content-gap);
+                min-width: unset; // undo desktop
+				height: $graphics-height;
 				transform: none;
 
 				pointer-events: none;
@@ -473,33 +593,31 @@
 					transform 700ms $out-generic,
 					filter 700ms $out-generic;
 
-				// Indicator pinned to bottom-left of the image area
+				// indicator pinned to bottom-left of the image area
 				#mobile-indicator {
 					position: absolute;
-					bottom: 20px;
-					left: 25px;
+					bottom: 18px;
+					left: 24px;
 					z-index: 1;
+				}
+
+				#mask {
+					position: absolute;
+					inset: 0;
+					z-index: 1;
+
+					background-color: $token-surface-solid-primary;
+					opacity: 0;
+
+					transition: opacity 300ms $out-generic;
+
+					&.masked {
+						opacity: 1;
+					}
 				}
 			}
 
 			&.hidden {
-				#content {
-					#title {
-						#text {
-							#heading {
-								h1:nth-child(2) {
-									@for $i from 1 through 8 {
-										span:nth-child(#{$i}) {
-											transform: translateX(3px * (8-$i))
-												scaleX(0.8) !important;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
 				#graphics {
 					transform: none !important;
 
@@ -558,7 +676,7 @@
 				#body {
 					#controls {
 						opacity: 0;
-						transform: translateY(-20px);
+                        transform: translateY(-20px);
 						transition-delay: 300ms;
 					}
 				}
